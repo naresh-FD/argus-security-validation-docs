@@ -41,3 +41,21 @@ test("ships safe report data and the downloadable evidence report", async () => 
   assert.equal(JSON.parse(reportData).additional_detectors.length, 40);
   await access(new URL("../public/Argus-Juice-Shop-Security-Validation.docx", import.meta.url));
 });
+
+test("ships responsive themes and a GitHub Pages deployment", async () => {
+  const [page, styles, pagesConfig, workflow, staticEntry] = await Promise.all([
+    readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
+    readFile(new URL("../vite.pages.config.ts", import.meta.url), "utf8"),
+    readFile(new URL("../.github/workflows/pages.yml", import.meta.url), "utf8"),
+    readFile(new URL("../index.html", import.meta.url), "utf8"),
+  ]);
+  assert.match(page, /Color theme/);
+  assert.match(page, /Open documentation menu/);
+  assert.match(styles, /data-theme="dark"/);
+  assert.match(styles, /max-width: 720px/);
+  assert.match(pagesConfig, /argus-security-validation-docs/);
+  assert.match(workflow, /actions\/deploy-pages@v4/);
+  assert.match(staticEntry, /argus-theme/);
+  await access(new URL("../public/.nojekyll", import.meta.url));
+});

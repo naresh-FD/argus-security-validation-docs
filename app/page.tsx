@@ -1,6 +1,37 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  Activity,
+  AlertTriangle,
+  BarChart3,
+  Boxes,
+  CircleGauge,
+  CodeXml,
+  Cpu,
+  DatabaseZap,
+  ExternalLink,
+  FileDown,
+  FileSearch,
+  FlaskConical,
+  GitBranch,
+  KeyRound,
+  Link2,
+  LockKeyhole,
+  Menu,
+  Monitor,
+  Moon,
+  PackageSearch,
+  ScanSearch,
+  Settings2,
+  ShieldAlert,
+  ShieldCheck,
+  Sun,
+  UserRoundCheck,
+  Wrench,
+  X,
+  type LucideIcon,
+} from "./icons";
 import report from "./report-data.json";
 
 type Detector = {
@@ -14,6 +45,14 @@ type Detector = {
   engine: string;
 };
 
+type Theme = "light" | "dark" | "system";
+
+const themes: Array<{ id: Theme; label: string; icon: LucideIcon }> = [
+  { id: "light", label: "Light theme", icon: Sun },
+  { id: "dark", label: "Dark theme", icon: Moon },
+  { id: "system", label: "Use system theme", icon: Monitor },
+];
+
 const leakLocations = [
   "data/static/codefixes/loginAdminChallenge_1.ts:18",
   "data/static/codefixes/loginAdminChallenge_2.ts:15",
@@ -25,17 +64,17 @@ const leakLocations = [
   "routes/login.ts:34",
 ];
 
-const coverageGroups = [
-  ["Secrets & sensitive data", "Private keys, cloud and SaaS tokens, database URLs, credential assignments, entropy and JWT-shaped literals, browser storage, secret logging, Docker secrets and JDBC passwords."],
-  ["Injection & taint flow", "SQL and NoSQL injection, shell commands, eval and dynamic code, LDAP, XPath, SpEL, templates, path traversal, redirects, prototype pollution and Python or optional JS taint paths."],
-  ["XSS & browser risks", "dangerouslySetInnerHTML, direct innerHTML writes, document.write, javascript: URLs, insecure storage and cookie security attributes."],
-  ["SSRF & outbound requests", "User-controlled request URLs in pattern rules and taint-backed Python or optional JavaScript request sinks."],
-  ["Cryptography & TLS", "Weak hashes, ciphers, modes, protocols and key sizes; certificate or hostname verification bypasses; fixed IVs or salts; insecure randomness and deprecated cipher APIs."],
-  ["Identity & access", "JWT verification bypasses, weak password KDFs, permit-all authorization, client-controlled authorization decisions and IDOR-style lookups."],
-  ["Deserialization & XXE", "Unsafe Python, Java and Node deserialization, risky YAML or XML APIs and missing external-entity controls."],
-  ["Configuration & frameworks", "CORS, debug mode, CSRF, cleartext protocols, loose permissions, disclosure headers, wildcard hosts, Express and Spring framework risks."],
-  ["Infrastructure as code", "Docker image, download, root-user and secret risks; GitHub Actions trust boundaries, permissions, mutable actions and secret echo; Kubernetes privilege and host exposure."],
-  ["Dependencies & quality", "Mutable dependency declarations, OSV advisory matching, swallowed exceptions, leaked file handles, high complexity, long functions and regex denial of service."],
+const coverageGroups: Array<{ title: string; copy: string; icon: LucideIcon }> = [
+  { title: "Secrets & sensitive data", copy: "Private keys, cloud and SaaS tokens, database URLs, credential assignments, entropy and JWT-shaped literals, browser storage, secret logging, Docker secrets and JDBC passwords.", icon: KeyRound },
+  { title: "Injection & taint flow", copy: "SQL and NoSQL injection, shell commands, eval and dynamic code, LDAP, XPath, SpEL, templates, path traversal, redirects, prototype pollution and Python or optional JS taint paths.", icon: GitBranch },
+  { title: "XSS & browser risks", copy: "dangerouslySetInnerHTML, direct innerHTML writes, document.write, javascript: URLs, insecure storage and cookie security attributes.", icon: CodeXml },
+  { title: "SSRF & outbound requests", copy: "User-controlled request URLs in pattern rules and taint-backed Python or optional JavaScript request sinks.", icon: Link2 },
+  { title: "Cryptography & TLS", copy: "Weak hashes, ciphers, modes, protocols and key sizes; certificate or hostname verification bypasses; fixed IVs or salts; insecure randomness and deprecated cipher APIs.", icon: LockKeyhole },
+  { title: "Identity & access", copy: "JWT verification bypasses, weak password KDFs, permit-all authorization, client-controlled authorization decisions and IDOR-style lookups.", icon: UserRoundCheck },
+  { title: "Deserialization & XXE", copy: "Unsafe Python, Java and Node deserialization, risky YAML or XML APIs and missing external-entity controls.", icon: DatabaseZap },
+  { title: "Configuration & frameworks", copy: "CORS, debug mode, CSRF, cleartext protocols, loose permissions, disclosure headers, wildcard hosts, Express and Spring framework risks.", icon: Settings2 },
+  { title: "Infrastructure as code", copy: "Docker image, download, root-user and secret risks; GitHub Actions trust boundaries, permissions, mutable actions and secret echo; Kubernetes privilege and host exposure.", icon: Boxes },
+  { title: "Dependencies & quality", copy: "Mutable dependency declarations, OSV advisory matching, swallowed exceptions, leaked file handles, high complexity, long functions and regex denial of service.", icon: PackageSearch },
 ];
 
 const recommendations = [
@@ -47,14 +86,14 @@ const recommendations = [
   "Gate on validated high and critical code findings rather than raw total count.",
 ];
 
-const nav = [
-  ["overview", "Overview"],
-  ["results", "Scan results"],
-  ["redaction", "P0 redaction"],
-  ["reliability", "Reliability"],
-  ["coverage", "Coverage"],
-  ["remediation", "Remediation"],
-  ["method", "Method"],
+const nav: Array<{ id: string; label: string; icon: LucideIcon }> = [
+  { id: "overview", label: "Overview", icon: CircleGauge },
+  { id: "results", label: "Scan results", icon: BarChart3 },
+  { id: "redaction", label: "P0 redaction", icon: KeyRound },
+  { id: "reliability", label: "Reliability", icon: Cpu },
+  { id: "coverage", label: "Coverage", icon: ScanSearch },
+  { id: "remediation", label: "Remediation", icon: Wrench },
+  { id: "method", label: "Method", icon: FlaskConical },
 ];
 
 function severityClass(severity: string) {
@@ -62,6 +101,58 @@ function severityClass(severity: string) {
 }
 
 export default function Home() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("overview");
+  const [theme, setTheme] = useState<Theme>("system");
+  const firstNavLink = useRef<HTMLAnchorElement>(null);
+
+  useEffect(() => {
+    const stored = window.localStorage.getItem("argus-theme");
+    const selected: Theme = stored === "light" || stored === "dark" ? stored : "system";
+    setTheme(selected);
+    if (selected === "system") delete document.documentElement.dataset.theme;
+    else document.documentElement.dataset.theme = selected;
+  }, []);
+
+  const selectTheme = (selected: Theme) => {
+    setTheme(selected);
+    if (selected === "system") {
+      delete document.documentElement.dataset.theme;
+      window.localStorage.removeItem("argus-theme");
+    } else {
+      document.documentElement.dataset.theme = selected;
+      window.localStorage.setItem("argus-theme", selected);
+    }
+  };
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMenuOpen(false);
+    };
+    document.addEventListener("keydown", onKeyDown);
+    document.body.classList.toggle("menu-locked", menuOpen);
+    if (menuOpen) window.setTimeout(() => firstNavLink.current?.focus(), 50);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      document.body.classList.remove("menu-locked");
+    };
+  }, [menuOpen]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (visible) setActiveSection(visible.target.id);
+      },
+      { rootMargin: "-18% 0px -68%", threshold: [0.05, 0.25, 0.5] },
+    );
+    nav.forEach(({ id }) => {
+      const section = document.getElementById(id);
+      if (section) observer.observe(section);
+    });
+    return () => observer.disconnect();
+  }, []);
+
   const detectors = useMemo<Detector[]>(() => {
     const regex = report.regex_detectors.map((row) => ({
       id: row.Rule,
@@ -103,25 +194,41 @@ export default function Home() {
 
   return (
     <div className="docs-shell">
+      <a className="skip-link" href="#main-content">Skip to content</a>
       <aside className="sidebar">
         <a className="brand" href="#overview" aria-label="Argus validation documentation home">
-          <span className="brand-mark">A</span>
+          <span className="brand-mark"><ShieldCheck size={20} strokeWidth={1.8} aria-hidden="true" /></span>
           <span><strong>ARGUS</strong><small>Validation docs</small></span>
         </a>
-        <div className="side-status"><span className="pulse" /> P0 validation failed</div>
-        <nav aria-label="Documentation sections">
-          {nav.map(([id, label], index) => (
-            <a key={id} href={`#${id}`}><span>{String(index + 1).padStart(2, "0")}</span>{label}</a>
+        <div className="theme-switch" role="group" aria-label="Color theme">
+          {themes.map(({ id, label, icon: Icon }) => (
+            <button key={id} type="button" onClick={() => selectTheme(id)} aria-label={label} title={label} aria-pressed={theme === id}>
+              <Icon size={15} strokeWidth={1.8} aria-hidden="true" />
+            </button>
           ))}
+        </div>
+        <button className="menu-toggle" type="button" onClick={() => setMenuOpen((open) => !open)} aria-expanded={menuOpen} aria-controls="docs-nav" aria-label={menuOpen ? "Close documentation menu" : "Open documentation menu"}>
+          {menuOpen ? <X aria-hidden="true" /> : <Menu aria-hidden="true" />}<span>{menuOpen ? "Close" : "Menu"}</span>
+        </button>
+        <div className="side-status"><ShieldAlert size={15} aria-hidden="true" /> P0 validation failed</div>
+        <nav id="docs-nav" className={menuOpen ? "mobile-open" : ""} aria-label="Documentation sections">
+          <div className="mobile-nav-heading"><span>Explore documentation</span><strong>7 sections</strong></div>
+          {nav.map(({ id, label, icon: Icon }, index) => (
+            <a key={id} ref={index === 0 ? firstNavLink : undefined} href={`#${id}`} onClick={() => setMenuOpen(false)} aria-current={activeSection === id ? "location" : undefined}>
+              <Icon size={17} strokeWidth={1.8} aria-hidden="true" />{label}
+            </a>
+          ))}
+          <div className="mobile-nav-footer"><span><ShieldAlert size={15} aria-hidden="true" /> P0 validation failed</span><a href="./Argus-Juice-Shop-Security-Validation.docx" download><FileDown size={16} aria-hidden="true" />Download evidence report</a></div>
         </nav>
+        {menuOpen && <button className="menu-scrim" type="button" aria-label="Close documentation menu" onClick={() => setMenuOpen(false)} />}
         <div className="side-meta">
           <p>Test target</p><strong>OWASP Juice Shop</strong>
           <p>Tested</p><strong>10 Aug 2026</strong>
-          <a className="download-link" href="/Argus-Juice-Shop-Security-Validation.docx" download>Download DOCX report</a>
+          <a className="download-link" href="./Argus-Juice-Shop-Security-Validation.docx" download><FileDown size={15} aria-hidden="true" />Download DOCX report</a>
         </div>
       </aside>
 
-      <main>
+      <main id="main-content">
         <section className="hero" id="overview">
           <div className="eyebrow">EXTERNAL SECURITY VALIDATION / BUILD 9F5EB22</div>
           <div className="hero-grid">
@@ -137,15 +244,15 @@ export default function Home() {
             </div>
           </div>
           <div className="metric-grid" aria-label="Validation metrics">
-            <article><span>Total findings</span><strong>714</strong><small>stable core + OSV</small></article>
-            <article><span>High + critical</span><strong>133</strong><small>requires triage</small></article>
-            <article><span>OSV advisories</span><strong>50</strong><small>across 17 packages</small></article>
-            <article><span>Static detector IDs</span><strong>124</strong><small>84 regex + 40 additional</small></article>
+            <article><Activity className="metric-icon" size={20} aria-hidden="true" /><span>Total findings</span><strong>714</strong><small>stable core + OSV</small></article>
+            <article><AlertTriangle className="metric-icon metric-risk" size={20} aria-hidden="true" /><span>High + critical</span><strong>133</strong><small>requires triage</small></article>
+            <article><PackageSearch className="metric-icon" size={20} aria-hidden="true" /><span>OSV advisories</span><strong>50</strong><small>across 17 packages</small></article>
+            <article><ScanSearch className="metric-icon" size={20} aria-hidden="true" /><span>Static detector IDs</span><strong>124</strong><small>84 regex + 40 additional</small></article>
           </div>
         </section>
 
         <section className="section" id="results">
-          <div className="section-heading"><span>01</span><div><p>Benchmark output</p><h2>Scan results</h2></div></div>
+          <div className="section-heading"><span className="section-icon"><BarChart3 aria-hidden="true" /></span><div><p>Benchmark output</p><h2>Scan results</h2></div></div>
           <div className="two-column">
             <div className="panel">
               <div className="panel-heading"><h3>Severity distribution</h3><span>714 total</span></div>
@@ -174,7 +281,7 @@ export default function Home() {
           </div>
 
           <div className="panel table-panel">
-            <div className="panel-heading"><h3>Dependency advisories by package</h3><span>OSV · 17 packages</span></div>
+            <div className="panel-heading"><h3 className="icon-title"><PackageSearch size={18} aria-hidden="true" />Dependency advisories by package</h3><span>OSV · 17 packages</span></div>
             <div className="compact-grid">
               {report.packages.map((row) => <div key={row.Package}><span>{row.Package}</span><strong>{row["Advisory findings"]}</strong></div>)}
             </div>
@@ -182,9 +289,9 @@ export default function Home() {
         </section>
 
         <section className="section danger-section" id="redaction">
-          <div className="section-heading"><span>02</span><div><p>Acceptance criterion failed</p><h2>Secret-redaction bypass</h2></div></div>
+          <div className="section-heading"><span className="section-icon danger-icon"><KeyRound aria-hidden="true" /></span><div><p>Acceptance criterion failed</p><h2>Secret-redaction bypass</h2></div></div>
           <div className="danger-callout">
-            <div className="danger-code">P0</div>
+            <div className="danger-code"><ShieldAlert size={30} aria-hidden="true" /><span>P0</span></div>
             <div><strong>Credential literals re-entered both serialized report surfaces.</strong><p>The SEC003 copies were safely redacted and fingerprinted. The same lines also triggered INJ003 and INJ004; those independent Finding objects retained their original snippets because redaction classification was applied per finding rather than per source location.</p></div>
           </div>
           <div className="two-column">
@@ -205,7 +312,7 @@ export default function Home() {
         </section>
 
         <section className="section" id="reliability">
-          <div className="section-heading"><span>03</span><div><p>Native runtime stress test</p><h2>Semantic-engine reliability</h2></div></div>
+          <div className="section-heading"><span className="section-icon"><Cpu aria-hidden="true" /></span><div><p>Native runtime stress test</p><h2>Semantic-engine reliability</h2></div></div>
           <div className="reliability-card">
             <div><span className="failure-label">FAIL</span><h3>Full-repository semantic scan crashed</h3><p>Windows access violation <code>-1073741819</code> reproduced without OSV and across the routes, data and frontend/src subtrees. The lib subtree completed.</p></div>
             <div className="reliability-facts"><div><strong>99 / 99</strong><span>tests passed with optional parsers</span></div><div><strong>3</strong><span>large subtrees reproduced the crash</span></div><div><strong>1</strong><span>subtree completed successfully</span></div></div>
@@ -214,10 +321,10 @@ export default function Home() {
         </section>
 
         <section className="section" id="coverage">
-          <div className="section-heading"><span>04</span><div><p>Detection surface</p><h2>What Argus catches and reports</h2></div></div>
+          <div className="section-heading"><span className="section-icon"><ScanSearch aria-hidden="true" /></span><div><p>Detection surface</p><h2>What Argus catches and reports</h2></div></div>
           <p className="section-copy wide">Argus defines 124 static detector IDs: 84 pattern rules and 40 AST, taint, semantic, entropy, policy and quality detectors. Dynamic dependency scanning adds one <code>SCA-&lt;OSV ID&gt;</code> result per matched advisory.</p>
           <div className="coverage-grid">
-            {coverageGroups.map(([title, copy], index) => <article key={title}><span>{String(index + 1).padStart(2, "0")}</span><h3>{title}</h3><p>{copy}</p></article>)}
+            {coverageGroups.map(({ title, copy, icon: Icon }) => <article key={title}><span className="coverage-icon"><Icon size={20} strokeWidth={1.8} aria-hidden="true" /></span><h3>{title}</h3><p>{copy}</p></article>)}
           </div>
 
           <div className="catalogue">
@@ -240,18 +347,18 @@ export default function Home() {
         </section>
 
         <section className="section" id="remediation">
-          <div className="section-heading"><span>05</span><div><p>Prioritized work</p><h2>Recommended next actions</h2></div></div>
+          <div className="section-heading"><span className="section-icon"><Wrench aria-hidden="true" /></span><div><p>Prioritized work</p><h2>Recommended next actions</h2></div></div>
           <div className="recommendations">{recommendations.map((item, index) => <article key={item}><span>{String(index + 1).padStart(2, "0")}</span><p>{item}</p></article>)}</div>
         </section>
 
         <section className="section method-section" id="method">
-          <div className="section-heading"><span>06</span><div><p>Reproducibility</p><h2>Method and sources</h2></div></div>
+          <div className="section-heading"><span className="section-icon"><FlaskConical aria-hidden="true" /></span><div><p>Reproducibility</p><h2>Method and sources</h2></div></div>
           <div className="method-grid">
-            <div><h3>Scope</h3><p>Shallow clone of the official Juice Shop repository at commit <code>a520e158cb65c43d24e2c55d84f09b05a2511a03</code>. The intentionally vulnerable application was not built or executed.</p></div>
-            <div><h3>Execution</h3><p>Stable stdlib scan, OSV dependency lookup, exact source-line redaction checks, isolated tree-sitter test environment and full-corpus semantic stress runs.</p></div>
-            <div><h3>Safety</h3><p>Credential values are excluded from this site and the DOCX. Generated raw JSON and Markdown were deleted after disclosure was reproduced.</p></div>
+            <div><h3 className="icon-title"><FileSearch size={18} aria-hidden="true" />Scope</h3><p>Shallow clone of the official Juice Shop repository at commit <code>a520e158cb65c43d24e2c55d84f09b05a2511a03</code>. The intentionally vulnerable application was not built or executed.</p></div>
+            <div><h3 className="icon-title"><FlaskConical size={18} aria-hidden="true" />Execution</h3><p>Stable stdlib scan, OSV dependency lookup, exact source-line redaction checks, isolated tree-sitter test environment and full-corpus semantic stress runs.</p></div>
+            <div><h3 className="icon-title"><ShieldCheck size={18} aria-hidden="true" />Safety</h3><p>Credential values are excluded from this site and the DOCX. Generated raw JSON and Markdown were deleted after disclosure was reproduced.</p></div>
           </div>
-          <div className="source-links"><a href="https://github.com/juice-shop/juice-shop">Official benchmark repository</a><a href="https://owasp.org/www-project-juice-shop/">OWASP project page</a><a href="https://osv.dev/">OSV advisory service</a><a href="https://github.com/naresh-FD/Argus">Argus repository</a></div>
+          <div className="source-links"><a href="https://github.com/juice-shop/juice-shop">Official benchmark repository<ExternalLink size={14} aria-hidden="true" /></a><a href="https://owasp.org/www-project-juice-shop/">OWASP project page<ExternalLink size={14} aria-hidden="true" /></a><a href="https://osv.dev/">OSV advisory service<ExternalLink size={14} aria-hidden="true" /></a><a href="https://github.com/naresh-FD/Argus">Argus repository<ExternalLink size={14} aria-hidden="true" /></a></div>
         </section>
 
         <footer><div><strong>ARGUS VALIDATION DOCS</strong><span>Evidence-backed security scanner assessment</span></div><a href="#overview">Back to top ↑</a></footer>

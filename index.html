@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#10161d" />
+    <meta name="description" content="External validation documentation for Argus static analysis, dependency scanning, secret redaction, and semantic-engine reliability." />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Argus Security Validation" />
+    <meta property="og:description" content="P0 redaction findings, benchmark results, and complete detector coverage." />
+    <meta property="og:image" content="https://naresh-fd.github.io/argus-security-validation-docs/og.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="./favicon.svg" />
+    <title>Argus Security Validation — OWASP Juice Shop</title>
+    <script>
+      (() => {
+        try {
+          const theme = localStorage.getItem("argus-theme");
+          if (theme === "light" || theme === "dark") document.documentElement.dataset.theme = theme;
+        } catch (_) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
