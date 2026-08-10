@@ -19,10 +19,9 @@ test("server-renders the Argus product documentation", async () => {
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
   const html = await response.text();
   assert.match(html, /<title>Argus Security Scanner/);
-  assert.match(html, /Security risks, found/);
-  assert.match(html, /where your code lives/);
+  assert.match(html, /Find security risks before they ship/);
   assert.match(html, /Everything you need from scan to merge/);
-  assert.match(html, /Security checks across the stack/);
+  assert.match(html, /Detection coverage/);
   assert.match(html, /124/);
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton/);
 });
@@ -41,10 +40,9 @@ test("ships safe report data and the downloadable evidence report", async () => 
   assert.equal(JSON.parse(reportData).regex_detectors.length, 84);
   assert.equal(JSON.parse(reportData).additional_detectors.length, 40);
   await access(new URL("../public/Argus-Juice-Shop-Security-Validation.docx", import.meta.url));
-  await access(new URL("../public/og-reference-style.png", import.meta.url));
 });
 
-test("ships the reference-style responsive UI and GitHub Pages deployment", async () => {
+test("ships responsive themes and a GitHub Pages deployment", async () => {
   const [page, styles, pagesConfig, workflow, staticEntry] = await Promise.all([
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
@@ -52,13 +50,12 @@ test("ships the reference-style responsive UI and GitHub Pages deployment", asyn
     readFile(new URL("../.github/workflows/pages.yml", import.meta.url), "utf8"),
     readFile(new URL("../index.html", import.meta.url), "utf8"),
   ]);
-  assert.match(page, /Open source · local-first/);
-  assert.match(page, /Open menu/);
-  assert.match(styles, /mobile-menu\.open/);
-  assert.match(styles, /max-width: 600px/);
+  assert.match(page, /Color theme/);
+  assert.match(page, /Open documentation menu/);
+  assert.match(styles, /data-theme="dark"/);
+  assert.match(styles, /max-width: 760px/);
   assert.match(pagesConfig, /argus-security-validation-docs/);
   assert.match(workflow, /actions\/deploy-pages@v4/);
-  assert.match(staticEntry, /Space\+Grotesk/);
-  assert.match(staticEntry, /og-reference-style\.png/);
+  assert.match(staticEntry, /argus-theme/);
   await access(new URL("../public/.nojekyll", import.meta.url));
 });
