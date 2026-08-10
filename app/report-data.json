@@ -1,0 +1,1358 @@
+{
+  "metrics": [
+    {
+      "Measure": "Repository files",
+      "Result": "1,182",
+      "Interpretation": "Files present in the shallow clone"
+    },
+    {
+      "Measure": "Files scanned",
+      "Result": "746",
+      "Interpretation": "Source/config/manifest files accepted by Argus"
+    },
+    {
+      "Measure": "Total findings",
+      "Result": "714",
+      "Interpretation": "Stable core plus OSV; findings are not all confirmed vulnerabilities"
+    },
+    {
+      "Measure": "High + critical",
+      "Result": "133",
+      "Interpretation": "Prioritize after dedupe and source/vendor filtering"
+    },
+    {
+      "Measure": "Unique rule IDs observed",
+      "Result": "75",
+      "Interpretation": "Includes dynamic SCA advisory IDs"
+    },
+    {
+      "Measure": "Redaction leak locations",
+      "Result": "8",
+      "Interpretation": "Acceptance criterion failed"
+    }
+  ],
+  "severity": [
+    {
+      "Severity": "Critical",
+      "Count": "5",
+      "Interpretation": "Immediate review; includes critical OSV advisories and severe code patterns"
+    },
+    {
+      "Severity": "High",
+      "Count": "128",
+      "Interpretation": "Likely exploitable or materially risky patterns requiring validation"
+    },
+    {
+      "Severity": "Medium",
+      "Count": "224",
+      "Interpretation": "Security hardening, policy, and dependency findings"
+    },
+    {
+      "Severity": "Low",
+      "Count": "357",
+      "Interpretation": "Mostly configuration/policy signals; high noise concentration observed"
+    },
+    {
+      "Severity": "Info",
+      "Count": "0",
+      "Interpretation": "No informational findings in this run"
+    }
+  ],
+  "categories": [
+    {
+      "Category": "config",
+      "Count": "348",
+      "Share": "48.7%"
+    },
+    {
+      "Category": "dependencies",
+      "Count": "224",
+      "Share": "31.4%"
+    },
+    {
+      "Category": "injection",
+      "Count": "67",
+      "Share": "9.4%"
+    },
+    {
+      "Category": "xss",
+      "Count": "17",
+      "Share": "2.4%"
+    },
+    {
+      "Category": "secrets",
+      "Count": "12",
+      "Share": "1.7%"
+    },
+    {
+      "Category": "access-control",
+      "Count": "12",
+      "Share": "1.7%"
+    },
+    {
+      "Category": "iac",
+      "Count": "8",
+      "Share": "1.1%"
+    },
+    {
+      "Category": "crypto",
+      "Count": "8",
+      "Share": "1.1%"
+    },
+    {
+      "Category": "data-exposure",
+      "Count": "7",
+      "Share": "1.0%"
+    },
+    {
+      "Category": "deserialization",
+      "Count": "6",
+      "Share": "0.8%"
+    },
+    {
+      "Category": "misconfig",
+      "Count": "2",
+      "Share": "0.3%"
+    },
+    {
+      "Category": "reliability",
+      "Count": "2",
+      "Share": "0.3%"
+    },
+    {
+      "Category": "framework",
+      "Count": "1",
+      "Share": "0.1%"
+    }
+  ],
+  "top_rules": [
+    {
+      "Rule": "CFG002",
+      "Signal": "Cleartext HTTP endpoint",
+      "Severity": "low",
+      "Count": "348"
+    },
+    {
+      "Rule": "DEP-MANIFEST-001",
+      "Signal": "npm dependency is not pinned exactly",
+      "Severity": "medium",
+      "Count": "174"
+    },
+    {
+      "Rule": "INJ003",
+      "Signal": "SQL built by string concatenation",
+      "Severity": "high",
+      "Count": "40"
+    },
+    {
+      "Rule": "INJ004",
+      "Signal": "Tagged/template SQL with interpolation",
+      "Severity": "high",
+      "Count": "12"
+    },
+    {
+      "Rule": "AUTH005",
+      "Signal": "Object lookup uses request-controlled identifier",
+      "Severity": "high",
+      "Count": "12"
+    },
+    {
+      "Rule": "XSS004",
+      "Signal": "javascript: URL",
+      "Severity": "medium",
+      "Count": "11"
+    },
+    {
+      "Rule": "SEC003",
+      "Signal": "Hardcoded credential assignment",
+      "Severity": "high",
+      "Count": "9"
+    },
+    {
+      "Rule": "INJ009",
+      "Signal": "NoSQL operator injection",
+      "Severity": "high",
+      "Count": "9"
+    },
+    {
+      "Rule": "CRY001",
+      "Signal": "Weak hash (MD5/SHA1)",
+      "Severity": "medium",
+      "Count": "8"
+    },
+    {
+      "Rule": "DES001",
+      "Signal": "Unsafe deserialization",
+      "Severity": "high",
+      "Count": "6"
+    },
+    {
+      "Rule": "XSS002",
+      "Signal": "Direct innerHTML assignment",
+      "Severity": "high",
+      "Count": "5"
+    },
+    {
+      "Rule": "DATA001",
+      "Signal": "Sensitive value in browser storage",
+      "Severity": "low",
+      "Count": "5"
+    },
+    {
+      "Rule": "INJ007",
+      "Signal": "Path traversal in file access",
+      "Severity": "high",
+      "Count": "3"
+    },
+    {
+      "Rule": "IAC-GHA-003",
+      "Signal": "Third-party action pinned to a mutable ref",
+      "Severity": "medium",
+      "Count": "3"
+    },
+    {
+      "Rule": "SCA-GHSA-g93w-mfhg-p222",
+      "Signal": "Known vulnerability in @angular/compiler@21.2.1 (CVE-2026-32635)",
+      "Severity": "high",
+      "Count": "2"
+    }
+  ],
+  "top_files": [
+    {
+      "Path": "frontend\\src\\assets\\private\\three.js",
+      "Findings": "311"
+    },
+    {
+      "Path": "package.json",
+      "Findings": "146"
+    },
+    {
+      "Path": "frontend\\package.json",
+      "Findings": "78"
+    },
+    {
+      "Path": "data\\datacreator.ts",
+      "Findings": "19"
+    },
+    {
+      "Path": "lib\\insecurity.ts",
+      "Findings": "6"
+    },
+    {
+      "Path": "Gruntfile.js",
+      "Findings": "5"
+    },
+    {
+      "Path": "routes\\login.ts",
+      "Findings": "4"
+    },
+    {
+      "Path": "server.ts",
+      "Findings": "4"
+    },
+    {
+      "Path": "frontend\\src\\assets\\private\\OrbitControls.js",
+      "Findings": "4"
+    },
+    {
+      "Path": "data\\static\\codefixes\\loginAdminChallenge_1.ts",
+      "Findings": "3"
+    },
+    {
+      "Path": "data\\static\\codefixes\\loginAdminChallenge_2.ts",
+      "Findings": "3"
+    },
+    {
+      "Path": "data\\static\\codefixes\\loginBenderChallenge_1.ts",
+      "Findings": "3"
+    }
+  ],
+  "packages": [
+    {
+      "Package": "multer",
+      "Advisory findings": "8"
+    },
+    {
+      "Package": "sanitize-html",
+      "Advisory findings": "7"
+    },
+    {
+      "Package": "@angular/common",
+      "Advisory findings": "5"
+    },
+    {
+      "Package": "@angular/core",
+      "Advisory findings": "5"
+    },
+    {
+      "Package": "jsonwebtoken",
+      "Advisory findings": "4"
+    },
+    {
+      "Package": "@angular/compiler",
+      "Advisory findings": "4"
+    },
+    {
+      "Package": "js-yaml",
+      "Advisory findings": "4"
+    },
+    {
+      "Package": "lodash-es",
+      "Advisory findings": "3"
+    },
+    {
+      "Package": "sequelize",
+      "Advisory findings": "2"
+    },
+    {
+      "Package": "marsdb",
+      "Advisory findings": "1"
+    },
+    {
+      "Package": "express-jwt",
+      "Advisory findings": "1"
+    },
+    {
+      "Package": "glob",
+      "Advisory findings": "1"
+    },
+    {
+      "Package": "file-type",
+      "Advisory findings": "1"
+    },
+    {
+      "Package": "morgan",
+      "Advisory findings": "1"
+    },
+    {
+      "Package": "notevil",
+      "Advisory findings": "1"
+    },
+    {
+      "Package": "socket.io",
+      "Advisory findings": "1"
+    },
+    {
+      "Package": "body-parser",
+      "Advisory findings": "1"
+    }
+  ],
+  "redaction_checks": [
+    {
+      "Check": "Secret-classified findings",
+      "Result": "19",
+      "Status/meaning": "All carried redacted=true and a 12-hex fingerprint"
+    },
+    {
+      "Check": "Malformed redaction metadata",
+      "Result": "0",
+      "Status/meaning": "PASS"
+    },
+    {
+      "Check": "Original secret-bearing source lines present in reports",
+      "Result": "8",
+      "Status/meaning": "FAIL"
+    },
+    {
+      "Check": "Affected surfaces",
+      "Result": "JSON and Markdown",
+      "Status/meaning": "The PR workflow posts the Markdown file directly"
+    }
+  ],
+  "regex_detectors": [
+    {
+      "Rule": "AUTH002",
+      "Detection": "Authorization decided from client-controlled field",
+      "Sev": "high",
+      "CWE": "CWE-639",
+      "Languages": "All core",
+      "Seen": "0"
+    },
+    {
+      "Rule": "AUTH005",
+      "Detection": "Object lookup uses request-controlled identifier",
+      "Sev": "high",
+      "CWE": "CWE-639",
+      "Languages": "All core",
+      "Seen": "12"
+    },
+    {
+      "Rule": "AUTH001",
+      "Detection": "JWT verification disabled / alg none",
+      "Sev": "critical",
+      "CWE": "CWE-347",
+      "Languages": "All core",
+      "Seen": "0"
+    },
+    {
+      "Rule": "AUTH003",
+      "Detection": "Weak password hashing / low KDF cost",
+      "Sev": "medium",
+      "CWE": "CWE-916",
+      "Languages": "All core",
+      "Seen": "0"
+    },
+    {
+      "Rule": "AUTH004",
+      "Detection": "Authorization disabled (permit all)",
+      "Sev": "high",
+      "CWE": "CWE-285",
+      "Languages": "java",
+      "Seen": "0"
+    },
+    {
+      "Rule": "CFG001",
+      "Detection": "Wildcard CORS origin",
+      "Sev": "medium",
+      "CWE": "CWE-942",
+      "Languages": "All core",
+      "Seen": "0"
+    },
+    {
+      "Rule": "CFG002",
+      "Detection": "Cleartext HTTP endpoint",
+      "Sev": "low",
+      "CWE": "CWE-319",
+      "Languages": "All core",
+      "Seen": "348"
+    },
+    {
+      "Rule": "COOK001",
+      "Detection": "Cookie without Secure flag",
+      "Sev": "medium",
+      "CWE": "CWE-614",
+      "Languages": "All core",
+      "Seen": "0"
+    },
+    {
+      "Rule": "COOK002",
+      "Detection": "Cookie without HttpOnly flag",
+      "Sev": "medium",
+      "CWE": "CWE-1004",
+      "Languages": "All core",
+      "Seen": "0"
+    },
+    {
+      "Rule": "COOK003",
+      "Detection": "Cookie SameSite set to None",
+      "Sev": "low",
+      "CWE": "CWE-1275",
+      "Languages": "All core",
+      "Seen": "0"
+    },
+    {
+      "Rule": "CRY001",
+      "Detection": "Weak hash (MD5/SHA1)",
+      "Sev": "medium",
+      "CWE": "CWE-327",
+      "Languages": "All core",
+      "Seen": "8"
+    },
+    {
+      "Rule": "CRY002",
+      "Detection": "Insecure randomness for security value",
+      "Sev": "medium",
+      "CWE": "CWE-338",
+      "Languages": "javascript, typescript",
+      "Seen": "0"
+    },
+    {
+      "Rule": "CRY003",
+      "Detection": "TLS certificate verification disabled",
+      "Sev": "critical",
+      "CWE": "CWE-295",
+      "Languages": "All core",
+      "Seen": "0"
+    },
+    {
+      "Rule": "CRY004",
+      "Detection": "Empty TrustManager (accepts any cert)",
+      "Sev": "critical",
+      "CWE": "CWE-295",
+      "Languages": "java",
+      "Seen": "0"
+    },
+    {
+      "Rule": "CRY005",
+      "Detection": "Weak/broken cipher algorithm",
+      "Sev": "high",
+      "CWE": "CWE-327",
+      "Languages": "java, python",
+      "Seen": "0"
+    },
+    {
+      "Rule": "CRY006",
+      "Detection": "ECB cipher mode",
+      "Sev": "medium",
+      "CWE": "CWE-327",
+      "Languages": "java, python",
+      "Seen": "0"
+    },
+    {
+      "Rule": "CRY007",
+      "Detection": "Weak TLS/SSL protocol version",
+      "Sev": "medium",
+      "CWE": "CWE-326",
+      "Languages": "All core",
+      "Seen": "0"
+    },
+    {
+      "Rule": "CRY008",
+      "Detection": "Weak asymmetric key size",
+      "Sev": "medium",
+      "CWE": "CWE-326",
+      "Languages": "java, python",
+      "Seen": "0"
+    },
+    {
+      "Rule": "CRY009",
+      "Detection": "Hostname verification disabled",
+      "Sev": "high",
+      "CWE": "CWE-295",
+      "Languages": "java",
+      "Seen": "0"
+    },
+    {
+      "Rule": "CRY010",
+      "Detection": "Hardcoded cryptographic IV",
+      "Sev": "low",
+      "CWE": "CWE-329",
+      "Languages": "java, python",
+      "Seen": "0"
+    },
+    {
+      "Rule": "CRY011",
+      "Detection": "Insecure RNG for security value",
+      "Sev": "medium",
+      "CWE": "CWE-330",
+      "Languages": "java, python",
+      "Seen": "0"
+    },
+    {
+      "Rule": "CRY012",
+      "Detection": "Hardcoded cryptographic salt",
+      "Sev": "low",
+      "CWE": "CWE-760",
+      "Languages": "All core",
+      "Seen": "0"
+    },
+    {
+      "Rule": "CFG003",
+      "Detection": "Stack trace exposed to caller",
+      "Sev": "low",
+      "CWE": "CWE-209",
+      "Languages": "java",
+      "Seen": "0"
+    },
+    {
+      "Rule": "DATA001",
+      "Detection": "Sensitive value in browser storage",
+      "Sev": "low",
+      "CWE": "CWE-922",
+      "Languages": "javascript, typescript",
+      "Seen": "5"
+    },
+    {
+      "Rule": "LOG001",
+      "Detection": "Logging a secret/credential",
+      "Sev": "medium",
+      "CWE": "CWE-532",
+      "Languages": "All core",
+      "Seen": "2"
+    },
+    {
+      "Rule": "DES001",
+      "Detection": "Unsafe deserialization",
+      "Sev": "high",
+      "CWE": "CWE-502",
+      "Languages": "All core",
+      "Seen": "6"
+    },
+    {
+      "Rule": "DES002",
+      "Detection": "Unsafe XML/YAML deserialization (Java)",
+      "Sev": "high",
+      "CWE": "CWE-502",
+      "Languages": "java",
+      "Seen": "0"
+    },
+    {
+      "Rule": "DES003",
+      "Detection": "Unsafe deserialization (Node)",
+      "Sev": "high",
+      "CWE": "CWE-502",
+      "Languages": "javascript, typescript",
+      "Seen": "0"
+    },
+    {
+      "Rule": "DOS001",
+      "Detection": "Regex vulnerable to catastrophic backtracking",
+      "Sev": "low",
+      "CWE": "CWE-1333",
+      "Languages": "All core",
+      "Seen": "0"
+    },
+    {
+      "Rule": "FRAME001",
+      "Detection": "Express CORS allows every origin by default",
+      "Sev": "medium",
+      "CWE": "CWE-942",
+      "Languages": "javascript, typescript",
+      "Seen": "1"
+    },
+    {
+      "Rule": "FRAME002",
+      "Detection": "Spring @CrossOrigin wildcard",
+      "Sev": "medium",
+      "CWE": "CWE-942",
+      "Languages": "java",
+      "Seen": "0"
+    },
+    {
+      "Rule": "IAC-DOCKER-001",
+      "Detection": "Unpinned or floating base image tag",
+      "Sev": "medium",
+      "CWE": "CWE-1104",
+      "Languages": "dockerfile",
+      "Seen": "2"
+    },
+    {
+      "Rule": "IAC-DOCKER-002",
+      "Detection": "ADD used to fetch a remote URL",
+      "Sev": "medium",
+      "CWE": "CWE-494",
+      "Languages": "dockerfile",
+      "Seen": "0"
+    },
+    {
+      "Rule": "IAC-DOCKER-003",
+      "Detection": "Hardcoded secret in ENV/ARG",
+      "Sev": "high",
+      "CWE": "CWE-798",
+      "Languages": "dockerfile",
+      "Seen": "0"
+    },
+    {
+      "Rule": "IAC-DOCKER-004",
+      "Detection": "Piping a remote download straight into a shell",
+      "Sev": "high",
+      "CWE": "CWE-494",
+      "Languages": "dockerfile",
+      "Seen": "0"
+    },
+    {
+      "Rule": "IAC-GHA-001",
+      "Detection": "pull_request_target trigger (privilege-escalation hotspot)",
+      "Sev": "high",
+      "CWE": "CWE-829",
+      "Languages": "github-actions",
+      "Seen": "1"
+    },
+    {
+      "Rule": "IAC-GHA-002",
+      "Detection": "Untrusted event data interpolated into a shell step",
+      "Sev": "critical",
+      "CWE": "CWE-78",
+      "Languages": "github-actions",
+      "Seen": "1"
+    },
+    {
+      "Rule": "IAC-GHA-003",
+      "Detection": "Third-party action pinned to a mutable ref",
+      "Sev": "medium",
+      "CWE": "CWE-1357",
+      "Languages": "github-actions",
+      "Seen": "3"
+    },
+    {
+      "Rule": "IAC-GHA-004",
+      "Detection": "Workflow token granted write-all permissions",
+      "Sev": "high",
+      "CWE": "CWE-732",
+      "Languages": "github-actions",
+      "Seen": "0"
+    },
+    {
+      "Rule": "IAC-GHA-005",
+      "Detection": "Secret referenced in a step that echoes/prints output",
+      "Sev": "medium",
+      "CWE": "CWE-532",
+      "Languages": "github-actions",
+      "Seen": "0"
+    },
+    {
+      "Rule": "IAC-K8S-001",
+      "Detection": "Privileged container",
+      "Sev": "critical",
+      "CWE": "CWE-250",
+      "Languages": "kubernetes",
+      "Seen": "0"
+    },
+    {
+      "Rule": "IAC-K8S-002",
+      "Detection": "Pod shares the host network/PID/IPC namespace",
+      "Sev": "high",
+      "CWE": "CWE-668",
+      "Languages": "kubernetes",
+      "Seen": "0"
+    },
+    {
+      "Rule": "IAC-K8S-003",
+      "Detection": "allowPrivilegeEscalation not disabled",
+      "Sev": "high",
+      "CWE": "CWE-250",
+      "Languages": "kubernetes",
+      "Seen": "0"
+    },
+    {
+      "Rule": "IAC-K8S-004",
+      "Detection": "Container explicitly runs as root (UID 0)",
+      "Sev": "medium",
+      "CWE": "CWE-250",
+      "Languages": "kubernetes",
+      "Seen": "0"
+    },
+    {
+      "Rule": "IAC-K8S-005",
+      "Detection": "hostPath volume mounts the host filesystem",
+      "Sev": "high",
+      "CWE": "CWE-668",
+      "Languages": "kubernetes",
+      "Seen": "0"
+    },
+    {
+      "Rule": "IAC-K8S-006",
+      "Detection": "Container image is unpinned (:latest or no tag)",
+      "Sev": "medium",
+      "CWE": "CWE-1104",
+      "Languages": "kubernetes",
+      "Seen": "0"
+    },
+    {
+      "Rule": "INJ001",
+      "Detection": "Use of eval()",
+      "Sev": "high",
+      "CWE": "CWE-95",
+      "Languages": "javascript, typescript, python",
+      "Seen": "2"
+    },
+    {
+      "Rule": "INJ002",
+      "Detection": "Function constructor",
+      "Sev": "high",
+      "CWE": "CWE-95",
+      "Languages": "javascript, typescript",
+      "Seen": "1"
+    },
+    {
+      "Rule": "INJ003",
+      "Detection": "SQL built by string concatenation",
+      "Sev": "high",
+      "CWE": "CWE-89",
+      "Languages": "All core",
+      "Seen": "40"
+    },
+    {
+      "Rule": "INJ004",
+      "Detection": "Tagged/template SQL with interpolation",
+      "Sev": "high",
+      "CWE": "CWE-89",
+      "Languages": "javascript, typescript",
+      "Seen": "12"
+    },
+    {
+      "Rule": "INJ005",
+      "Detection": "OS command from interpolated string",
+      "Sev": "critical",
+      "CWE": "CWE-78",
+      "Languages": "javascript, typescript",
+      "Seen": "0"
+    },
+    {
+      "Rule": "INJ006",
+      "Detection": "Runtime.exec with dynamic input",
+      "Sev": "high",
+      "CWE": "CWE-78",
+      "Languages": "java",
+      "Seen": "0"
+    },
+    {
+      "Rule": "INJ007",
+      "Detection": "Path traversal in file access",
+      "Sev": "high",
+      "CWE": "CWE-22",
+      "Languages": "All core",
+      "Seen": "3"
+    },
+    {
+      "Rule": "INJ008",
+      "Detection": "LDAP query from concatenation",
+      "Sev": "high",
+      "CWE": "CWE-90",
+      "Languages": "java",
+      "Seen": "0"
+    },
+    {
+      "Rule": "INJ009",
+      "Detection": "NoSQL operator injection",
+      "Sev": "high",
+      "CWE": "CWE-943",
+      "Languages": "javascript, typescript",
+      "Seen": "9"
+    },
+    {
+      "Rule": "INJ010",
+      "Detection": "XPath query from concatenation",
+      "Sev": "medium",
+      "CWE": "CWE-643",
+      "Languages": "java",
+      "Seen": "0"
+    },
+    {
+      "Rule": "INJ011",
+      "Detection": "Open redirect from request input",
+      "Sev": "medium",
+      "CWE": "CWE-601",
+      "Languages": "All core",
+      "Seen": "0"
+    },
+    {
+      "Rule": "INJ012",
+      "Detection": "Server-side template injection",
+      "Sev": "high",
+      "CWE": "CWE-1336",
+      "Languages": "python",
+      "Seen": "0"
+    },
+    {
+      "Rule": "INJ013",
+      "Detection": "Spring expression (SpEL) injection",
+      "Sev": "high",
+      "CWE": "CWE-94",
+      "Languages": "java",
+      "Seen": "0"
+    },
+    {
+      "Rule": "CFG004",
+      "Detection": "CSRF protection disabled",
+      "Sev": "high",
+      "CWE": "CWE-352",
+      "Languages": "All core",
+      "Seen": "0"
+    },
+    {
+      "Rule": "CFG005",
+      "Detection": "Debug mode enabled",
+      "Sev": "medium",
+      "CWE": "CWE-489",
+      "Languages": "python, javascript, typescript",
+      "Seen": "1"
+    },
+    {
+      "Rule": "CFG006",
+      "Detection": "Cleartext network protocol",
+      "Sev": "low",
+      "CWE": "CWE-319",
+      "Languages": "All core",
+      "Seen": "0"
+    },
+    {
+      "Rule": "CFG007",
+      "Detection": "Loose file permissions",
+      "Sev": "medium",
+      "CWE": "CWE-732",
+      "Languages": "All core",
+      "Seen": "0"
+    },
+    {
+      "Rule": "CFG008",
+      "Detection": "Technology/version disclosure header",
+      "Sev": "low",
+      "CWE": "CWE-200",
+      "Languages": "All core",
+      "Seen": "1"
+    },
+    {
+      "Rule": "CFG009",
+      "Detection": "Wildcard host allowlist",
+      "Sev": "medium",
+      "CWE": "CWE-183",
+      "Languages": "python",
+      "Seen": "0"
+    },
+    {
+      "Rule": "CFG010",
+      "Detection": "Origin-reflecting CORS",
+      "Sev": "medium",
+      "CWE": "CWE-942",
+      "Languages": "All core",
+      "Seen": "0"
+    },
+    {
+      "Rule": "SEC001",
+      "Detection": "Private key committed to source",
+      "Sev": "critical",
+      "CWE": "CWE-798",
+      "Languages": "All core",
+      "Seen": "1"
+    },
+    {
+      "Rule": "SEC002",
+      "Detection": "AWS access key id",
+      "Sev": "critical",
+      "CWE": "CWE-798",
+      "Languages": "All core",
+      "Seen": "0"
+    },
+    {
+      "Rule": "SEC003",
+      "Detection": "Hardcoded credential assignment",
+      "Sev": "high",
+      "CWE": "CWE-798",
+      "Languages": "All core",
+      "Seen": "9"
+    },
+    {
+      "Rule": "SEC004",
+      "Detection": "Bearer token literal",
+      "Sev": "high",
+      "CWE": "CWE-798",
+      "Languages": "All core",
+      "Seen": "0"
+    },
+    {
+      "Rule": "SEC005",
+      "Detection": "Google API key",
+      "Sev": "high",
+      "CWE": "CWE-798",
+      "Languages": "All core",
+      "Seen": "0"
+    },
+    {
+      "Rule": "SEC006",
+      "Detection": "GitHub access token",
+      "Sev": "high",
+      "CWE": "CWE-798",
+      "Languages": "All core",
+      "Seen": "0"
+    },
+    {
+      "Rule": "SEC007",
+      "Detection": "Slack token",
+      "Sev": "high",
+      "CWE": "CWE-798",
+      "Languages": "All core",
+      "Seen": "0"
+    },
+    {
+      "Rule": "SEC008",
+      "Detection": "Stripe secret key",
+      "Sev": "critical",
+      "CWE": "CWE-798",
+      "Languages": "All core",
+      "Seen": "0"
+    },
+    {
+      "Rule": "SEC009",
+      "Detection": "SendGrid API key",
+      "Sev": "high",
+      "CWE": "CWE-798",
+      "Languages": "All core",
+      "Seen": "0"
+    },
+    {
+      "Rule": "SEC010",
+      "Detection": "Database URI with inline password",
+      "Sev": "high",
+      "CWE": "CWE-798",
+      "Languages": "All core",
+      "Seen": "0"
+    },
+    {
+      "Rule": "SEC011",
+      "Detection": "Google OAuth client secret",
+      "Sev": "high",
+      "CWE": "CWE-798",
+      "Languages": "All core",
+      "Seen": "0"
+    },
+    {
+      "Rule": "SSRF001",
+      "Detection": "Server-side request to user-controlled URL",
+      "Sev": "high",
+      "CWE": "CWE-918",
+      "Languages": "All core",
+      "Seen": "0"
+    },
+    {
+      "Rule": "XSS001",
+      "Detection": "dangerouslySetInnerHTML",
+      "Sev": "high",
+      "CWE": "CWE-79",
+      "Languages": "javascript, typescript",
+      "Seen": "0"
+    },
+    {
+      "Rule": "XSS002",
+      "Detection": "Direct innerHTML assignment",
+      "Sev": "high",
+      "CWE": "CWE-79",
+      "Languages": "javascript, typescript",
+      "Seen": "5"
+    },
+    {
+      "Rule": "XSS003",
+      "Detection": "document.write",
+      "Sev": "medium",
+      "CWE": "CWE-79",
+      "Languages": "javascript, typescript",
+      "Seen": "1"
+    },
+    {
+      "Rule": "XSS004",
+      "Detection": "javascript: URL",
+      "Sev": "medium",
+      "CWE": "CWE-79",
+      "Languages": "javascript, typescript",
+      "Seen": "11"
+    },
+    {
+      "Rule": "XXE001",
+      "Detection": "XML parser without XXE hardening",
+      "Sev": "medium",
+      "CWE": "CWE-611",
+      "Languages": "java",
+      "Seen": "0"
+    },
+    {
+      "Rule": "XXE002",
+      "Detection": "XML external entity resolution (Python)",
+      "Sev": "medium",
+      "CWE": "CWE-611",
+      "Languages": "python",
+      "Seen": "0"
+    }
+  ],
+  "additional_detectors": [
+    {
+      "Rule": "DEP-MANIFEST-001",
+      "Engine": "Core policy",
+      "Detection": "Mutable or ranged npm dependency version",
+      "Sev": "medium",
+      "Scope": "package.json",
+      "Seen": "174"
+    },
+    {
+      "Rule": "DEP-MANIFEST-002",
+      "Engine": "Core policy",
+      "Detection": "Python dependency not pinned with ==",
+      "Sev": "medium",
+      "Scope": "requirements.txt",
+      "Seen": "0"
+    },
+    {
+      "Rule": "DEP-MANIFEST-003",
+      "Engine": "Core policy",
+      "Detection": "Mutable, unresolved, range, or snapshot Maven version",
+      "Sev": "medium",
+      "Scope": "pom.xml",
+      "Seen": "0"
+    },
+    {
+      "Rule": "IAC-DOCKER-005",
+      "Engine": "Core file check",
+      "Detection": "Container has no non-root USER instruction",
+      "Sev": "medium",
+      "Scope": "Dockerfile",
+      "Seen": "1"
+    },
+    {
+      "Rule": "SEC-ENTROPY-001",
+      "Engine": "Core heuristic",
+      "Detection": "High-entropy literal near a secret-sensitive identifier",
+      "Sev": "high",
+      "Scope": "JS/TS/Java/Python",
+      "Seen": "2"
+    },
+    {
+      "Rule": "SEC-ENTROPY-002",
+      "Engine": "Core heuristic",
+      "Detection": "JWT-shaped literal in secret-sensitive context",
+      "Sev": "high",
+      "Scope": "JS/TS/Java/Python",
+      "Seen": "0"
+    },
+    {
+      "Rule": "PY-AST-001",
+      "Engine": "Core Python AST",
+      "Detection": "subprocess call with shell=True",
+      "Sev": "high",
+      "Scope": "Python",
+      "Seen": "0"
+    },
+    {
+      "Rule": "PY-AST-002",
+      "Engine": "Core Python AST",
+      "Detection": "TLS request with verify=False",
+      "Sev": "critical",
+      "Scope": "Python",
+      "Seen": "0"
+    },
+    {
+      "Rule": "PY-AST-003",
+      "Engine": "Core Python AST",
+      "Detection": "Dynamic execution through exec() or compile()",
+      "Sev": "high",
+      "Scope": "Python",
+      "Seen": "0"
+    },
+    {
+      "Rule": "PY-AST-004",
+      "Engine": "Core Python AST",
+      "Detection": "OS command execution through os.system/os.popen",
+      "Sev": "high",
+      "Scope": "Python",
+      "Seen": "0"
+    },
+    {
+      "Rule": "PY-AST-005",
+      "Engine": "Core Python AST",
+      "Detection": "Flask development debug mode enabled",
+      "Sev": "medium",
+      "Scope": "Python",
+      "Seen": "0"
+    },
+    {
+      "Rule": "PY-AST-006",
+      "Engine": "Core Python AST",
+      "Detection": "Unverified SSL context",
+      "Sev": "critical",
+      "Scope": "Python",
+      "Seen": "0"
+    },
+    {
+      "Rule": "PY-AST-007",
+      "Engine": "Core Python AST",
+      "Detection": "Certificate verification set to CERT_NONE",
+      "Sev": "critical",
+      "Scope": "Python",
+      "Seen": "0"
+    },
+    {
+      "Rule": "PY-AST-008",
+      "Engine": "Core Python AST",
+      "Detection": "Race-prone tempfile.mktemp use",
+      "Sev": "medium",
+      "Scope": "Python",
+      "Seen": "0"
+    },
+    {
+      "Rule": "TAINT-PY-001",
+      "Engine": "Core Python taint",
+      "Detection": "Tainted input reaches an SQL query sink",
+      "Sev": "critical",
+      "Scope": "Python",
+      "Seen": "0"
+    },
+    {
+      "Rule": "TAINT-PY-002",
+      "Engine": "Core Python taint",
+      "Detection": "Tainted input reaches a shell command sink",
+      "Sev": "critical",
+      "Scope": "Python",
+      "Seen": "0"
+    },
+    {
+      "Rule": "TAINT-PY-003",
+      "Engine": "Core Python taint",
+      "Detection": "Tainted input reaches eval/exec",
+      "Sev": "critical",
+      "Scope": "Python",
+      "Seen": "0"
+    },
+    {
+      "Rule": "TAINT-PY-004",
+      "Engine": "Core Python taint",
+      "Detection": "Tainted input reaches file open/path sink",
+      "Sev": "high",
+      "Scope": "Python",
+      "Seen": "0"
+    },
+    {
+      "Rule": "TAINT-PY-005",
+      "Engine": "Core Python taint",
+      "Detection": "Tainted input reaches an outbound URL (SSRF)",
+      "Sev": "high",
+      "Scope": "Python",
+      "Seen": "0"
+    },
+    {
+      "Rule": "TAINT-PY-006",
+      "Engine": "Core Python taint",
+      "Detection": "Tainted input becomes a server-side template",
+      "Sev": "high",
+      "Scope": "Python",
+      "Seen": "0"
+    },
+    {
+      "Rule": "REL-PY-001",
+      "Engine": "Core quality",
+      "Detection": "Broad exception is silently swallowed",
+      "Sev": "medium",
+      "Scope": "Python",
+      "Seen": "0"
+    },
+    {
+      "Rule": "REL-PY-002",
+      "Engine": "Core quality",
+      "Detection": "File opened outside a context manager",
+      "Sev": "low",
+      "Scope": "Python",
+      "Seen": "2"
+    },
+    {
+      "Rule": "REL-GEN-001",
+      "Engine": "Core quality",
+      "Detection": "Empty catch block hides failures",
+      "Sev": "medium",
+      "Scope": "JS/TS/Java",
+      "Seen": "0"
+    },
+    {
+      "Rule": "MAINT-PY-001",
+      "Engine": "Core quality",
+      "Detection": "High cyclomatic complexity",
+      "Sev": "low",
+      "Scope": "Python",
+      "Seen": "0"
+    },
+    {
+      "Rule": "MAINT-PY-002",
+      "Engine": "Core quality",
+      "Detection": "Very long function",
+      "Sev": "low",
+      "Scope": "Python",
+      "Seen": "0"
+    },
+    {
+      "Rule": "JS-TAINT-001",
+      "Engine": "Optional semantic",
+      "Detection": "Tainted input reaches eval/Function",
+      "Sev": "critical",
+      "Scope": "JavaScript/TypeScript",
+      "Seen": "N/E"
+    },
+    {
+      "Rule": "JS-TAINT-002",
+      "Engine": "Optional semantic",
+      "Detection": "Tainted input reaches an SQL query sink",
+      "Sev": "critical",
+      "Scope": "JavaScript/TypeScript",
+      "Seen": "N/E"
+    },
+    {
+      "Rule": "JS-TAINT-003",
+      "Engine": "Optional semantic",
+      "Detection": "Tainted input reaches shell execution",
+      "Sev": "critical",
+      "Scope": "JavaScript/TypeScript",
+      "Seen": "N/E"
+    },
+    {
+      "Rule": "JS-TAINT-004",
+      "Engine": "Optional semantic",
+      "Detection": "Tainted input reaches filesystem path sink",
+      "Sev": "high",
+      "Scope": "JavaScript/TypeScript",
+      "Seen": "N/E"
+    },
+    {
+      "Rule": "JS-TAINT-005",
+      "Engine": "Optional semantic",
+      "Detection": "Tainted input reaches outbound request URL",
+      "Sev": "high",
+      "Scope": "JavaScript/TypeScript",
+      "Seen": "N/E"
+    },
+    {
+      "Rule": "JS-SEM-001",
+      "Engine": "Optional semantic",
+      "Detection": "Prototype pollution assignment",
+      "Sev": "high",
+      "Scope": "JavaScript/TypeScript",
+      "Seen": "N/E"
+    },
+    {
+      "Rule": "JS-SEM-002",
+      "Engine": "Optional semantic",
+      "Detection": "Dynamic code execution through Node vm",
+      "Sev": "high",
+      "Scope": "JavaScript/TypeScript",
+      "Seen": "N/E"
+    },
+    {
+      "Rule": "JS-SEM-003",
+      "Engine": "Optional semantic",
+      "Detection": "Deprecated password-derived createCipher/createDecipher",
+      "Sev": "medium",
+      "Scope": "JavaScript/TypeScript",
+      "Seen": "N/E"
+    },
+    {
+      "Rule": "JS-SEM-004",
+      "Engine": "Optional semantic",
+      "Detection": "Cookie missing httpOnly/secure flags",
+      "Sev": "medium",
+      "Scope": "JavaScript/TypeScript",
+      "Seen": "N/E"
+    },
+    {
+      "Rule": "JS-SEM-005",
+      "Engine": "Optional semantic",
+      "Detection": "String passed to setTimeout/setInterval",
+      "Sev": "medium",
+      "Scope": "JavaScript/TypeScript",
+      "Seen": "N/E"
+    },
+    {
+      "Rule": "JAVA-SEM-001",
+      "Engine": "Optional semantic",
+      "Detection": "Concatenated SQL reaches a query sink",
+      "Sev": "high",
+      "Scope": "Java",
+      "Seen": "N/E"
+    },
+    {
+      "Rule": "JAVA-SEM-002",
+      "Engine": "Optional semantic",
+      "Detection": "XML factory lacks XXE hardening",
+      "Sev": "high",
+      "Scope": "Java",
+      "Seen": "N/E"
+    },
+    {
+      "Rule": "JAVA-SEM-003",
+      "Engine": "Optional semantic",
+      "Detection": "Concatenated input reaches command execution",
+      "Sev": "critical",
+      "Scope": "Java",
+      "Seen": "N/E"
+    },
+    {
+      "Rule": "JAVA-SEM-004",
+      "Engine": "Optional semantic",
+      "Detection": "Concatenated input reaches a file path sink",
+      "Sev": "high",
+      "Scope": "Java",
+      "Seen": "N/E"
+    },
+    {
+      "Rule": "JAVA-SEM-005",
+      "Engine": "Optional semantic",
+      "Detection": "Literal JDBC password in getConnection",
+      "Sev": "high",
+      "Scope": "Java",
+      "Seen": "N/E"
+    }
+  ]
+}
