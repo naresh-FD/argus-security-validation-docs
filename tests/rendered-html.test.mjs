@@ -13,15 +13,15 @@ async function render() {
   );
 }
 
-test("server-renders the validation documentation", async () => {
+test("server-renders the Argus product documentation", async () => {
   const response = await render();
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
   const html = await response.text();
-  assert.match(html, /<title>Argus Security Validation/);
-  assert.match(html, /P0.*DO NOT PUBLISH/);
-  assert.match(html, /Secret-redaction bypass/);
-  assert.match(html, /What Argus catches and reports/);
+  assert.match(html, /<title>Argus Security Scanner/);
+  assert.match(html, /Find security risks before they ship/);
+  assert.match(html, /Everything you need from scan to merge/);
+  assert.match(html, /Detection coverage/);
   assert.match(html, /124/);
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton/);
 });
@@ -34,7 +34,7 @@ test("ships safe report data and the downloadable evidence report", async () => 
     readFile(new URL("../app/report-data.json", import.meta.url), "utf8"),
   ]);
   assert.match(page, /Detector reference/);
-  assert.match(layout, /Argus Security Validation/);
+  assert.match(layout, /Argus Security Scanner/);
   assert.doesNotMatch(packageJson, /react-loading-skeleton/);
   assert.doesNotMatch(page, /_sites-preview|codex-preview/);
   assert.equal(JSON.parse(reportData).regex_detectors.length, 84);
@@ -53,7 +53,7 @@ test("ships responsive themes and a GitHub Pages deployment", async () => {
   assert.match(page, /Color theme/);
   assert.match(page, /Open documentation menu/);
   assert.match(styles, /data-theme="dark"/);
-  assert.match(styles, /max-width: 720px/);
+  assert.match(styles, /max-width: 760px/);
   assert.match(pagesConfig, /argus-security-validation-docs/);
   assert.match(workflow, /actions\/deploy-pages@v4/);
   assert.match(staticEntry, /argus-theme/);

@@ -14,19 +14,19 @@ export async function generateMetadata(): Promise<Metadata> {
   const image = new URL("/og.png", origin).toString();
   return {
     metadataBase: origin,
-    title: "Argus Security Validation — OWASP Juice Shop",
-    description: "External validation documentation for Argus static analysis, dependency scanning, secret redaction and semantic-engine reliability.",
+    title: "Argus Security Scanner — Local-first SAST",
+    description: "Product documentation for Argus: local-first static analysis, taint tracking, IaC scanning, OSV advisories, local AI triage and CI enforcement.",
     icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
     openGraph: {
-      title: "Argus Security Validation",
-      description: "P0 redaction findings, benchmark results and complete detector coverage.",
+      title: "Argus — Find security risks before they ship",
+      description: "Local-first application security for JavaScript, TypeScript, React, Java and Python.",
       type: "website",
-      images: [{ url: image, width: 1672, height: 942, alt: "Argus security validation — P0 validation failed" }],
+      images: [{ url: image, width: 1672, height: 942, alt: "Argus local-first application security scanner" }],
     },
     twitter: {
       card: "summary_large_image",
-      title: "Argus Security Validation",
-      description: "External benchmark results and detector coverage.",
+      title: "Argus — Find security risks before they ship",
+      description: "Local-first static analysis, taint tracking, IaC, dependency scanning and CI enforcement.",
       images: [image],
     },
   };
