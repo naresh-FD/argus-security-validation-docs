@@ -25,6 +25,12 @@ test("server-renders the Argus product documentation", async () => {
   assert.match(html, /Top features/);
   assert.match(html, /Source-to-sink taint/);
   assert.match(html, /Everything you need from scan to merge/);
+  assert.match(html, /Supported languages and frameworks/);
+  assert.match(html, /javascript-original\.svg/);
+  assert.match(html, /typescript-original\.svg/);
+  assert.match(html, /react-original\.svg/);
+  assert.match(html, /java-original\.svg/);
+  assert.match(html, /python-original\.svg/);
   assert.match(html, /Detection coverage/);
   assert.match(html, /124/);
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton/);

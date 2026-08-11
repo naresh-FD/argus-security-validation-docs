@@ -80,8 +80,16 @@ const navGroups = [
   },
 ];
 
-const featureCards: Array<{ title: string; copy: string; meta: string; icon: LucideIcon }> = [
-  { title: "Multi-language scanning", copy: "Scan JavaScript, TypeScript, React, Java and Python with language-aware rules and a consistent finding model.", meta: "One CLI across your stack", icon: CodeXml },
+const supportedLanguages = [
+  { name: "JavaScript", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@v2.17.0/icons/javascript/javascript-original.svg" },
+  { name: "TypeScript", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@v2.17.0/icons/typescript/typescript-original.svg" },
+  { name: "React", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@v2.17.0/icons/react/react-original.svg" },
+  { name: "Java", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@v2.17.0/icons/java/java-original.svg" },
+  { name: "Python", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@v2.17.0/icons/python/python-original.svg" },
+] as const;
+
+const featureCards: Array<{ title: string; copy: string; meta: string; icon: LucideIcon; languages?: typeof supportedLanguages }> = [
+  { title: "Multi-language scanning", copy: "Scan JavaScript, TypeScript, React, Java and Python with language-aware rules and a consistent finding model.", meta: "One CLI across your stack", icon: CodeXml, languages: supportedLanguages },
   { title: "Source-to-sink taint", copy: "Trace request data, environment values and arguments through assignments into SQL, commands, files, code execution and outbound requests.", meta: "Python core + optional JS/TS", icon: GitBranch },
   { title: "Secret-safe findings", copy: "Redact credential values before findings enter pipeline state, keep useful context and attach deterministic fingerprints for safe deduplication.", meta: "Fail-closed redaction", icon: KeyRound },
   { title: "IaC and dependency risk", copy: "Inspect Dockerfiles, GitHub Actions and Kubernetes manifests, then optionally check pinned packages against live OSV advisories.", meta: "Code + supply chain", icon: PackageSearch },
@@ -304,10 +312,21 @@ export default function Home() {
           <section className="section" id="features">
             <div className="section-intro"><span className="kicker">Platform features</span><h2>Everything you need from scan to merge</h2><p>Start with a zero-dependency deterministic core, then add deeper analysis only where your repository needs it.</p></div>
             <div className="feature-grid">
-              {featureCards.map(({ title, copy, meta, icon: Icon }) => (
-                <article className="feature-card" key={title}>
+              {featureCards.map(({ title, copy, meta, icon: Icon, languages }) => (
+                <article className={`feature-card${languages ? " feature-card-languages" : ""}`} key={title}>
                   <span className="feature-icon"><Icon size={21} strokeWidth={1.8} aria-hidden="true" /></span>
-                  <h3>{title}</h3><p>{copy}</p><small>{meta}</small>
+                  <h3>{title}</h3><p>{copy}</p>
+                  {languages && (
+                    <div className="language-badges" aria-label="Supported languages and frameworks">
+                      {languages.map(({ name, logo }) => (
+                        <span className="language-badge" key={name}>
+                          <img src={logo} alt="" width={22} height={22} loading="lazy" decoding="async" />
+                          <span>{name}</span>
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                  <small>{meta}</small>
                 </article>
               ))}
             </div>
