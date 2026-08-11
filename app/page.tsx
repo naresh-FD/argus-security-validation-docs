@@ -269,14 +269,22 @@ export default function Home() {
               <div className="product-badge"><span>Open source</span> Local-first application security</div>
               <h1>Find security risks before they ship.</h1>
               <p>Argus is an agentic static security scanner for modern polyglot repositories. It combines deterministic rules, taint analysis, infrastructure checks, dependency advisories and optional local AI triage—without sending your code to a cloud model.</p>
+              <div className="hero-local-first">
+                <span className="hero-local-first-icon"><LockKeyhole size={20} strokeWidth={1.9} aria-hidden="true" /></span>
+                <div><strong>Local-first by design</strong><span>Core analysis never uploads source code.</span></div>
+              </div>
+              <div className="hero-top-features" aria-label="Top Argus features">
+                <strong>Top features</strong>
+                <ul>
+                  <li><CodeXml size={16} aria-hidden="true" /><span>Multi-language SAST</span></li>
+                  <li><GitBranch size={16} aria-hidden="true" /><span>Source-to-sink taint</span></li>
+                  <li><PackageSearch size={16} aria-hidden="true" /><span>IaC + dependency checks</span></li>
+                  <li><ShieldCheck size={16} aria-hidden="true" /><span>CI merge gates</span></li>
+                </ul>
+              </div>
               <div className="hero-actions">
                 <a className="button button-primary" href="#quickstart">Get started <CodeXml size={17} aria-hidden="true" /></a>
                 <a className="button button-secondary" href="https://github.com/naresh-FD/Argus">View repository <ExternalLink size={15} aria-hidden="true" /></a>
-              </div>
-              <div className="trust-row" aria-label="Argus highlights">
-                <span><ShieldCheck size={15} aria-hidden="true" />MIT licensed</span>
-                <span><LockKeyhole size={15} aria-hidden="true" />Local analysis</span>
-                <span><GitBranch size={15} aria-hidden="true" />CI gate ready</span>
               </div>
             </div>
 

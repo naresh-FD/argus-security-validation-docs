@@ -20,6 +20,10 @@ test("server-renders the Argus product documentation", async () => {
   const html = await response.text();
   assert.match(html, /<title>Argus Security Scanner/);
   assert.match(html, /Find security risks before they ship/);
+  assert.match(html, /Local-first by design/);
+  assert.match(html, /Core analysis never uploads source code/);
+  assert.match(html, /Top features/);
+  assert.match(html, /Source-to-sink taint/);
   assert.match(html, /Everything you need from scan to merge/);
   assert.match(html, /Detection coverage/);
   assert.match(html, /124/);
