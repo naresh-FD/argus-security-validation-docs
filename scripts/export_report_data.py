@@ -7,7 +7,6 @@ from pathlib import Path
 
 from docx import Document
 
-
 ROOT = Path(__file__).resolve().parents[2]
 REPORT = ROOT / "reports" / "juice-shop" / "Argus-Juice-Shop-Security-Validation.docx"
 OUTPUT = Path(__file__).resolve().parents[1] / "app" / "report-data.json"

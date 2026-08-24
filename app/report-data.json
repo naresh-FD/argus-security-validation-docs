@@ -1353,6 +1353,86 @@
       "Sev": "high",
       "Scope": "Java",
       "Seen": "N/E"
+    },
+    {
+      "Rule": "AUTH006",
+      "Engine": "Core appsec",
+      "Detection": "Request-controlled object access without owner or tenant authorization",
+      "Sev": "high",
+      "Scope": "JS/TS/Java/Python",
+      "Seen": "N/E"
+    },
+    {
+      "Rule": "AUTH007",
+      "Engine": "Core appsec",
+      "Detection": "Sensitive route without a visible authentication guard",
+      "Sev": "high",
+      "Scope": "JS/TS/Java/Python",
+      "Seen": "N/E"
+    },
+    {
+      "Rule": "AUTH008",
+      "Engine": "Core appsec",
+      "Detection": "Incomplete JWT validation or unthrottled authentication endpoint",
+      "Sev": "medium",
+      "Scope": "JS/TS/Java/Python",
+      "Seen": "N/E"
+    },
+    {
+      "Rule": "UPLOAD001",
+      "Engine": "Core appsec",
+      "Detection": "Client upload filename reused as a storage path",
+      "Sev": "high",
+      "Scope": "JS/TS/Java/Python",
+      "Seen": "N/E"
+    },
+    {
+      "Rule": "FAILOPEN001",
+      "Engine": "Core appsec",
+      "Detection": "Exception path returns or assigns an allow result",
+      "Sev": "high",
+      "Scope": "JS/TS/Java/Python",
+      "Seen": "N/E"
+    },
+    {
+      "Rule": "DOS002",
+      "Engine": "Core appsec",
+      "Detection": "Request or upload processed without a visible resource limit",
+      "Sev": "medium",
+      "Scope": "JS/TS/Java/Python",
+      "Seen": "N/E"
+    },
+    {
+      "Rule": "MASS001",
+      "Engine": "Core appsec",
+      "Detection": "Request object passed directly to persistence",
+      "Sev": "high",
+      "Scope": "JS/TS/Java/Python",
+      "Seen": "N/E"
+    },
+    {
+      "Rule": "CFG011",
+      "Engine": "Core appsec",
+      "Detection": "Web application security headers missing or insecure",
+      "Sev": "medium",
+      "Scope": "JS/TS/Python",
+      "Seen": "N/E"
+    },
+    {
+      "Rule": "DEP-CONTAINER-001",
+      "Engine": "Core policy",
+      "Detection": "Unpinned package installation in a container build",
+      "Sev": "medium",
+      "Scope": "Dockerfile",
+      "Seen": "N/E"
+    },
+    {
+      "Rule": "DEP-MANIFEST-004",
+      "Engine": "Core policy",
+      "Detection": "Mutable or unresolved Gradle dependency version",
+      "Sev": "medium",
+      "Scope": "Gradle",
+      "Seen": "N/E"
     }
   ]
 }
