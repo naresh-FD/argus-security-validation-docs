@@ -32,7 +32,7 @@ test("server-renders the Argus product documentation", async () => {
   assert.match(html, /java-original\.svg/);
   assert.match(html, /python-original\.svg/);
   assert.match(html, /Detection coverage/);
-  assert.match(html, /124/);
+  assert.match(html, /168/);
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton/);
 });
 
@@ -47,8 +47,8 @@ test("ships safe report data and the downloadable evidence report", async () => 
   assert.match(layout, /Argus Security Scanner/);
   assert.doesNotMatch(packageJson, /react-loading-skeleton/);
   assert.doesNotMatch(page, /_sites-preview|codex-preview/);
-  assert.equal(JSON.parse(reportData).regex_detectors.length, 84);
-  assert.equal(JSON.parse(reportData).additional_detectors.length, 40);
+  assert.equal(JSON.parse(reportData).regex_detectors.length, 100);
+  assert.equal(JSON.parse(reportData).additional_detectors.length, 68);
   await access(new URL("../public/Argus-Juice-Shop-Security-Validation.docx", import.meta.url));
 });
 

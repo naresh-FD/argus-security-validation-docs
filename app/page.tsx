@@ -185,10 +185,10 @@ export default function Home() {
       id: row.Rule,
       detection: row.Detection,
       severity: row.Sev,
-      cwe: "—",
+      cwe: row.CWE,
       scope: row.Scope,
       seen: row.Seen,
-      kind: row.Engine === "Optional semantic" ? ("Optional" as const) : ("Core" as const),
+      kind: row.Engine.includes("semantic") ? ("Optional" as const) : ("Core" as const),
       engine: row.Engine,
     }));
     return [...regex, ...additional];
@@ -298,11 +298,11 @@ export default function Home() {
 
             <div className="hero-console" aria-label="Argus command line example">
               <div className="console-bar"><span /><span /><span /><strong>terminal</strong></div>
-              <pre><code><span className="prompt">$</span> argus ./src --check-deps --fail-on high{"\n\n"}<span className="muted-code">plan</span>       124 detectors selected{"\n"}<span className="muted-code">discover</span>   746 files accepted{"\n"}<span className="muted-code">analyze</span>    pattern · AST · taint · IaC{"\n"}<span className="muted-code">triage</span>     dedupe · rank · remediate{"\n\n"}<span className="success-code">✓ report written with safe snippets</span></code></pre>
+              <pre><code><span className="prompt">$</span> argus ./src --check-deps --fail-on high{"\n\n"}<span className="muted-code">plan</span>       168 detector IDs active{"\n"}<span className="muted-code">discover</span>   746 files accepted{"\n"}<span className="muted-code">analyze</span>    pattern · AST · taint · appsec · IaC{"\n"}<span className="muted-code">triage</span>     dedupe · rank · remediate{"\n\n"}<span className="success-code">✓ report written with safe snippets</span></code></pre>
             </div>
 
             <div className="product-stats">
-              <div><strong>124</strong><span>static detector IDs</span></div>
+              <div><strong>168</strong><span>static detector IDs</span></div>
               <div><strong>3</strong><span>language ecosystems</span></div>
               <div><strong>0</strong><span>core runtime dependencies</span></div>
               <div><strong>100%</strong><span>local code analysis</span></div>
@@ -363,11 +363,11 @@ export default function Home() {
           </section>
 
           <section className="section section-tinted" id="coverage">
-            <div className="section-intro"><span className="kicker">Detection coverage</span><h2>Security coverage across code, configuration and supply chain</h2><p>Argus defines 84 pattern rules plus 40 AST, taint, semantic, entropy, policy and quality detectors. OSV matches are added dynamically when dependency scanning is enabled.</p></div>
+            <div className="section-intro"><span className="kicker">Detection coverage</span><h2>Security coverage across code, configuration and supply chain</h2><p>Argus defines 100 pattern rules plus 68 AST, taint, semantic, framework, entropy, policy and quality detectors. OSV matches are added dynamically when dependency scanning is enabled.</p></div>
             <div className="coverage-grid">
               {coverageGroups.map(({ title, copy, icon: Icon }) => <article key={title}><span><Icon size={19} strokeWidth={1.8} aria-hidden="true" /></span><div><h3>{title}</h3><p>{copy}</p></div></article>)}
             </div>
-            <a className="inline-link" href="#reference">Explore all 124 detector IDs <ExternalLink size={14} aria-hidden="true" /></a>
+            <a className="inline-link" href="#reference">Explore all 168 detector IDs <ExternalLink size={14} aria-hidden="true" /></a>
           </section>
 
           <section className="section" id="cicd">
