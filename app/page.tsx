@@ -157,10 +157,10 @@ export default function Home() {
       id: row.Rule,
       detection: row.Detection,
       severity: row.Sev,
-      cwe: "-",
+      cwe: row.CWE,
       scope: row.Scope,
       seen: row.Seen,
-      kind: row.Engine === "Optional semantic" ? ("Optional" as const) : ("Core" as const),
+      kind: row.Engine.includes("semantic") ? ("Optional" as const) : ("Core" as const),
       engine: row.Engine,
     }));
     return [...regex, ...additional];
@@ -225,7 +225,7 @@ export default function Home() {
               <h1>Security risks, found <em>where your code lives.</em></h1>
               <p className="hero-lede">Argus is an agentic static security scanner for modern polyglot repositories. It combines deterministic rules, taint analysis, infrastructure checks, dependency advisories and optional local AI triage without sending your code to a cloud model.</p>
               <div className="pills" aria-label="Argus highlights">
-                <span className="pill"><strong>134</strong> detector IDs</span>
+                <span className="pill"><strong>168</strong> detector IDs</span>
                 <span className="pill"><strong>100%</strong> local core</span>
                 <span className="pill">CLI <strong>+ GitHub Actions</strong></span>
                 <span className="pill">MIT licensed</span>
@@ -238,7 +238,7 @@ export default function Home() {
                 <span className="term-label">argus scan · terminal</span>
                 <span className="pass-badge">PASS</span>
               </div>
-              <pre className="term-body"><code><span className="ck">$</span> argus ./src --check-deps --fail-on high{"\n\n"}<span className="cm">plan</span>       134 detectors selected{"\n"}<span className="cm">discover</span>   746 files accepted{"\n"}<span className="cm">analyze</span>    pattern · AST · taint · appsec · IaC{"\n"}<span className="cm">triage</span>     dedupe · redact · rank{"\n\n"}<span className="cs">✓ report written with safe snippets</span></code></pre>
+              <pre className="term-body"><code><span className="ck">$</span> argus ./src --check-deps --fail-on high{"\n\n"}<span className="cm">plan</span>       168 detector IDs active{"\n"}<span className="cm">discover</span>   746 files accepted{"\n"}<span className="cm">analyze</span>    pattern · AST · taint · appsec · IaC{"\n"}<span className="cm">triage</span>     dedupe · redact · rank{"\n\n"}<span className="cs">✓ report written with safe snippets</span></code></pre>
             </div>
           </section>
         </div>
