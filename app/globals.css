@@ -219,6 +219,19 @@ h3 { margin: 0; font-size: 17px; letter-spacing: -.02em; }
 .coverage-grid article { display: grid; grid-template-columns: 42px 1fr; gap: 15px; padding: 19px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
 .coverage-grid article > span { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 10px; background: var(--brand-soft); color: var(--brand); }
 .coverage-grid h3 { font-size: 14px; }.coverage-grid p { margin: 6px 0 0; color: var(--muted); font-size: 12px; line-height: 1.55; }
+.coverage-scorecard { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 24px; }
+.coverage-scorecard article { padding: 20px; border: 1px solid var(--line); border-radius: 12px; background: var(--code-bg); }
+.coverage-scorecard strong, .coverage-scorecard span { display: block; }
+.coverage-scorecard strong { color: #7dd3c6; font-size: 28px; line-height: 1.1; }
+.coverage-scorecard span { margin-top: 7px; color: var(--code-ink); font: 750 9px/1.45 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; }
+.coverage-scorecard p { margin: 10px 0 0; color: #9cada8; font-size: 10px; line-height: 1.55; }
+.completed-expansion { margin-top: 56px; }
+.completed-expansion > .section-intro { margin-bottom: 24px; }
+.expansion-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.expansion-grid article { padding: 21px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+.expansion-grid h3 { font-size: 14px; }
+.expansion-grid code { display: block; margin: 9px 0; color: var(--brand-strong); font: 700 10px/1.6 var(--font-mono); }
+.expansion-grid p { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.6; }
 .inline-link { display: inline-flex; align-items: center; gap: 8px; margin-top: 24px; color: var(--brand-strong); font-size: 12px; font-weight: 750; text-decoration: none; }
 
 .ci-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
@@ -319,7 +332,7 @@ footer > div { display: flex; align-items: center; gap: 12px; }.footer .brand-ma
   .product-stats div { padding: 18px; border-bottom: 1px solid var(--line); }
   .product-stats div:nth-child(2n) { border-right: 0; }
   .product-stats div:nth-child(n+3) { border-bottom: 0; }
-  .feature-grid, .coverage-grid, .ci-features, .validation-grid { grid-template-columns: 1fr; }
+  .feature-grid, .coverage-grid, .coverage-scorecard, .expansion-grid, .ci-features, .validation-grid { grid-template-columns: 1fr; }
   .feature-card { min-height: 0; }
   .install-options { grid-template-columns: 1fr; }
   .install-options div { border-right: 0; border-bottom: 1px solid var(--line); }

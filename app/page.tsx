@@ -109,15 +109,45 @@ const pipeline = [
 
 const coverageGroups: Array<{ title: string; copy: string; icon: LucideIcon }> = [
   { title: "Secrets", copy: "Keys, tokens, database URIs, credentials, entropy and unsafe secret handling.", icon: KeyRound },
-  { title: "Injection", copy: "SQL, NoSQL, OS commands, dynamic code, LDAP, XPath, templates and redirects.", icon: GitBranch },
-  { title: "Browser security", copy: "XSS sinks, insecure storage, cookie attributes and client-controlled authorization.", icon: CodeXml },
+  { title: "Injection", copy: "SQL, NoSQL, OS commands, dynamic code, LDAP, XPath, templates, CSV formulas and email headers.", icon: GitBranch },
+  { title: "Browser security", copy: "XSS, postMessage, tabnabbing, source maps, cookie attributes and client-controlled authorization.", icon: CodeXml },
   { title: "SSRF and paths", copy: "Tainted request URLs, filesystem paths and outbound network destinations.", icon: Link2 },
   { title: "Crypto and TLS", copy: "Weak hashes, ciphers, protocols, key sizes, randomness and verification bypasses.", icon: LockKeyhole },
-  { title: "Identity and access", copy: "JWT bypasses, weak KDFs, permit-all authorization and IDOR-style lookups.", icon: UserRoundCheck },
+  { title: "Identity and access", copy: "JWT, OAuth state and PKCE, session fixation, IDOR and timing-safe secret comparisons.", icon: UserRoundCheck },
   { title: "Unsafe parsing", copy: "Deserialization, YAML and XML APIs, plus missing external-entity controls.", icon: DatabaseZap },
-  { title: "Configuration", copy: "CORS, CSRF, debug flags, permissions, cleartext protocols and framework defaults.", icon: Settings2 },
+  { title: "Configuration", copy: "CORS, CSRF, debug tooling, host-header trust, WebSockets, permissions and framework defaults.", icon: Settings2 },
   { title: "Infrastructure", copy: "Docker, GitHub Actions and Kubernetes privilege, trust and secret risks.", icon: Boxes },
-  { title: "Dependencies and quality", copy: "OSV advisories, mutable versions, swallowed exceptions, complexity and ReDoS.", icon: Activity },
+  { title: "Dependencies and quality", copy: "OSV advisories, mutable versions, race conditions, business-logic checks, complexity and ReDoS.", icon: Activity },
+];
+
+const coverageScorecard = [
+  { value: "169", label: "matrix entries", copy: "168 static detector IDs plus dynamic OSV advisories." },
+  { value: "10/10", label: "OWASP Top 10:2025", copy: "Every category has direct detector coverage." },
+  { value: "6/10", label: "API Security Top 10", copy: "Direct coverage for API1, API2, API3, API4, API6 and API7." },
+  { value: "15/25", label: "CWE Top 25", copy: "Direct mappings for the code weakness classes Argus scans." },
+];
+
+const completedExpansion = [
+  {
+    title: "Classic web attack vectors",
+    rules: "POLL001–003 · DOM001–003 · AUTH009–012 · CFG012–015 · INJ014–015 · WS001–003",
+    copy: "Prototype pollution, unsafe cross-window messaging, tabnabbing, OAuth flaws, host-header and CRLF injection, CSV/email injection and WebSocket trust gaps.",
+  },
+  {
+    title: "Framework-aware packs",
+    rules: "NODE001–002 · SPRING001–002 · CFG016 · INJ016 · GQL001–004",
+    copy: "Express static and upload handling, Spring actuator and controller authorization, Django host policy, request-controlled file responses and GraphQL limits.",
+  },
+  {
+    title: "Flow and business logic",
+    rules: "TAINT-PY-001–006 · RACE001 · BIZ001–003",
+    copy: "Interprocedural source-to-sink flows, second-order data paths, check-then-act races, client-controlled pricing, negative values and browser-trusted roles.",
+  },
+  {
+    title: "Red-flag reporting and corpus",
+    rules: "--rules owasp-a03 · --rules api-top10 · JSON OWASP tags",
+    copy: "Severity × exploitability grouping, OWASP aliases and CI-ready metadata, backed by vulnerable and hardened fixtures for each new vector.",
+  },
 ];
 
 const allNav = navGroups.flatMap((group) => group.items);
@@ -367,7 +397,16 @@ export default function Home() {
             <div className="coverage-grid">
               {coverageGroups.map(({ title, copy, icon: Icon }) => <article key={title}><span><Icon size={19} strokeWidth={1.8} aria-hidden="true" /></span><div><h3>{title}</h3><p>{copy}</p></div></article>)}
             </div>
-            <a className="inline-link" href="#reference">Explore all 168 detector IDs <ExternalLink size={14} aria-hidden="true" /></a>
+            <div className="coverage-scorecard" aria-label="Security standards coverage">
+              {coverageScorecard.map(({ value, label, copy }) => <article key={label}><strong>{value}</strong><span>{label}</span><p>{copy}</p></article>)}
+            </div>
+            <div className="completed-expansion">
+              <div className="section-intro"><span className="kicker">Roadmap status · complete</span><h2>The practical web-attack roadmap is implemented</h2><p>Phases 0–5 now cover the missing browser, identity, framework, protocol and business-logic classes, with safe counterparts in the validation corpus.</p></div>
+              <div className="expansion-grid">
+                {completedExpansion.map(({ title, rules, copy }) => <article key={title}><h3>{title}</h3><code>{rules}</code><p>{copy}</p></article>)}
+              </div>
+            </div>
+            <a className="inline-link" href="#reference">Explore all 168 static detector IDs <ExternalLink size={14} aria-hidden="true" /></a>
           </section>
 
           <section className="section" id="cicd">
@@ -418,7 +457,7 @@ export default function Home() {
           </section>
 
           <section className="section" id="reference">
-            <div className="section-intro"><span className="kicker">Complete catalogue</span><h2>Detector reference</h2><p>Search every built-in detector by rule ID, CWE, language, engine or detection behavior.</p></div>
+            <div className="section-intro"><span className="kicker">Complete catalogue</span><h2>Detector reference</h2><p>Search 168 static detector IDs by rule, CWE, language, engine or detection behavior. Dynamic OSV matches bring the generated attack-vector matrix to 169 entries.</p></div>
             <div className="catalogue">
               <div className="catalogue-toolbar">
                 <label className="search-field"><span>Search detectors</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Rule ID, CWE, language or detection…" /></label>
