@@ -24,6 +24,10 @@ test("server-renders the Argus product documentation", async () => {
   assert.match(html, /Everything you need from scan to merge/);
   assert.match(html, /Security checks across the stack/);
   assert.match(html, /168/);
+  assert.match(html, /169/);
+  assert.match(html, /OWASP Top 10:2025/);
+  assert.match(html, /The practical web-attack roadmap is implemented/);
+  assert.match(html, /Attack-vector expansion/);
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton/);
 });
 
@@ -35,6 +39,9 @@ test("ships safe report data and the downloadable evidence report", async () => 
     readFile(new URL("../app/report-data.json", import.meta.url), "utf8"),
   ]);
   assert.match(page, /Detector reference/);
+  assert.match(page, /POLL001–003/);
+  assert.match(page, /RACE001/);
+  assert.doesNotMatch(layout, /x-forwarded-host|headers\(\)/);
   assert.match(layout, /Argus Security Scanner/);
   assert.doesNotMatch(packageJson, /react-loading-skeleton/);
   assert.doesNotMatch(page, /_sites-preview|codex-preview/);

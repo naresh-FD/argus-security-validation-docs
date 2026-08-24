@@ -36,6 +36,7 @@ const navLinks = [
   { id: "overview", label: "Overview" },
   { id: "pipeline", label: "How it works" },
   { id: "features", label: "Features" },
+  { id: "coverage", label: "Coverage" },
   { id: "usage", label: "Usage" },
   { id: "reference", label: "Detectors" },
 ];
@@ -97,22 +98,58 @@ const featureCards: Array<{ title: string; copy: string; tone: string; icon: Luc
 
 const coverageCards: Array<{ title: string; copy: string; icon: LucideIcon }> = [
   { title: "Secrets", copy: "Keys, tokens, database URIs, credentials and unsafe secret handling.", icon: KeyRound },
-  { title: "Injection", copy: "SQL, NoSQL, OS commands, dynamic code, templates and redirects.", icon: GitBranch },
-  { title: "Browser security", copy: "XSS sinks, insecure storage, cookies and client-side authorization.", icon: CodeXml },
+  { title: "Injection", copy: "SQL, NoSQL, OS commands, dynamic code, templates, CSV formulas and email headers.", icon: GitBranch },
+  { title: "Browser security", copy: "XSS, postMessage, tabnabbing, source maps and client-side authorization.", icon: CodeXml },
   { title: "SSRF and paths", copy: "Tainted URLs, filesystem paths and outbound network destinations.", icon: Link2 },
-  { title: "Identity and access", copy: "JWT bypasses, weak KDFs, permit-all authorization and IDOR patterns.", icon: UserRoundCheck },
-  { title: "Configuration", copy: "CORS, CSRF, debug flags, permissions and cleartext protocols.", icon: Settings2 },
+  { title: "Identity and access", copy: "JWT, OAuth state and PKCE, session fixation, IDOR and timing-safe comparisons.", icon: UserRoundCheck },
+  { title: "Configuration", copy: "CORS, CSRF, debug tooling, host-header trust, WebSockets and framework defaults.", icon: Settings2 },
+];
+
+const coverageScorecard = [
+  { value: "169", label: "matrix entries", copy: "168 static detector IDs plus dynamic OSV advisories." },
+  { value: "10/10", label: "OWASP Top 10:2025", copy: "Every category has direct detector coverage." },
+  { value: "6/10", label: "API Security Top 10", copy: "Direct coverage for API1, API2, API3, API4, API6 and API7." },
+  { value: "15/25", label: "CWE Top 25", copy: "Direct mappings for the code weakness classes Argus scans." },
+];
+
+const completedExpansion = [
+  {
+    title: "Classic web attack vectors",
+    rules: "POLL001–003 · DOM001–003 · AUTH009–012 · CFG012–015 · INJ014–015 · WS001–003",
+    copy: "Prototype pollution, unsafe cross-window messaging, tabnabbing, OAuth flaws, host-header and CRLF injection, CSV/email injection and WebSocket trust gaps.",
+  },
+  {
+    title: "Framework-aware packs",
+    rules: "NODE001–002 · SPRING001–002 · CFG016 · INJ016 · GQL001–004",
+    copy: "Express static and upload handling, Spring actuator and controller authorization, Django host policy, request-controlled file responses and GraphQL limits.",
+  },
+  {
+    title: "Flow and business logic",
+    rules: "TAINT-PY-001–006 · RACE001 · BIZ001–003",
+    copy: "Interprocedural source-to-sink flows, second-order data paths, check-then-act races, client-controlled pricing, negative values and browser-trusted roles.",
+  },
+  {
+    title: "Red-flag reporting and corpus",
+    rules: "--rules owasp-a03 · --rules api-top10 · JSON OWASP tags",
+    copy: "Severity × exploitability grouping, OWASP aliases and CI-ready metadata, backed by vulnerable and hardened fixtures for each new vector.",
+  },
 ];
 
 const validationItems = [
   {
-    status: "Live",
+    status: "Complete",
+    statusClass: "st-live",
+    title: "Attack-vector expansion · phases 0–5",
+    copy: "Coverage matrix, classic web vectors, framework packs, engine upgrades, red-flag reporting and the positive/negative validation corpus are implemented.",
+  },
+  {
+    status: "Complete",
     statusClass: "st-live",
     title: "Deterministic scanner and AST engine",
     copy: "The zero-dependency core ships with pattern, AST, entropy, policy and quality detectors for repeatable local scans.",
   },
   {
-    status: "Live",
+    status: "Complete",
     statusClass: "st-live",
     title: "Taint, infrastructure and dependency coverage",
     copy: "Taint propagation, IaC checks and optional OSV advisories extend coverage beyond line-level matches.",
@@ -291,13 +328,30 @@ export default function Home() {
               ))}
             </div>
 
-            <div className="subsection-heading">
+            <div className="subsection-heading" id="coverage">
               <div className="sec-label">Coverage</div>
               <h2>Security checks across the stack</h2>
             </div>
             <div className="coverage-grid">
               {coverageCards.map(({ title, copy, icon: Icon }) => (
                 <article key={title}><span><Icon size={19} strokeWidth={2} aria-hidden="true" /></span><div><h3>{title}</h3><p>{copy}</p></div></article>
+              ))}
+            </div>
+
+            <div className="coverage-scorecard" aria-label="Security standards coverage">
+              {coverageScorecard.map(({ value, label, copy }) => (
+                <article key={label}><strong>{value}</strong><span>{label}</span><p>{copy}</p></article>
+              ))}
+            </div>
+
+            <div className="expansion-heading">
+              <div className="sec-label">Completed expansion</div>
+              <h2>The practical web-attack roadmap is implemented</h2>
+              <p className="sec-intro">The detector catalogue now includes the missing browser, identity, framework, protocol and business-logic classes, with safe counterparts in the validation corpus.</p>
+            </div>
+            <div className="expansion-grid">
+              {completedExpansion.map(({ title, rules, copy }) => (
+                <article key={title}><h3>{title}</h3><code>{rules}</code><p>{copy}</p></article>
               ))}
             </div>
           </div>
@@ -338,7 +392,7 @@ export default function Home() {
             <p className="sec-intro">Argus publishes both its working capabilities and the failure modes discovered during real-repository validation.</p>
             <div className="road-list">
               {validationItems.map((item, index) => (
-                <article className={`road-item ${index === validationItems.length - 1 ? "road-item-active" : ""}`} key={item.title}>
+                <article className={`road-item ${index === 0 ? "road-item-active" : ""}`} key={item.title}>
                   <span className={`status ${item.statusClass}`}>{item.status}</span>
                   <div><h3>{item.title}</h3><p>{item.copy}</p></div>
                 </article>
@@ -355,7 +409,7 @@ export default function Home() {
           <div className="wrap">
             <div className="sec-label">Detector reference</div>
             <h2>Search all built-in security detectors</h2>
-            <p className="sec-intro">Filter by rule ID, CWE, language, engine or detection behavior. OSV matches are added dynamically when dependency scanning is enabled.</p>
+            <p className="sec-intro">Filter 168 static detector IDs by rule, CWE, language, engine or detection behavior. Dynamic OSV matches are added when dependency scanning is enabled, bringing the generated matrix to 169 entries.</p>
             <div className="catalogue">
               <div className="catalogue-toolbar">
                 <label><span>Search detectors</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Rule ID, CWE, language or detection..." /></label>
