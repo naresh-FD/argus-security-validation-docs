@@ -1,100 +1,74 @@
-# vinext-starter
+# Argus security validation docs
 
-A clean full-stack starter running on
-[vinext](https://github.com/cloudflare/vinext), with optional Cloudflare D1 and
-Drizzle support.
+<!-- conduit-change: CONDUIT-2026-001 -->
 
-## Prerequisites
+Public documentation site for **Argus**, a local-first static application security (SAST) scanner for
+JavaScript, TypeScript, React, Java and Python. The site covers the product overview, features, quick
+start, detection coverage, CI/CD integration, the privacy model, the Juice Shop validation lab and a
+detector reference.
+
+- Live site: <https://naresh-fd.github.io/argus-security-validation-docs/>
+- Argus source code lives in a separate private repository. This repository holds the documentation
+  site only.
+
+## What is in this repository
+
+| Path | Purpose |
+|---|---|
+| `app/page.tsx` | The whole documentation page (a single React component) |
+| `app/report-data.json` | Tables rendered by the page: metrics, severity, categories, top rules and files, packages, redaction checks and detector inventories |
+| `app/globals.css`, `app/icons.tsx` | Styles and icons |
+| `public/Argus-Juice-Shop-Security-Validation.docx` | Downloadable validation report linked from the page |
+| `index.html`, `src/main.tsx`, `vite.pages.config.ts` | Entry point and Vite config for the GitHub Pages build |
+| `scripts/export_report_data.py` | Regenerates `app/report-data.json` (see below) |
+| `tests/rendered-html.test.mjs` | Checks that the rendered page contains the expected content and that the report data and download ship |
+| `.github/workflows/pages.yml` | Builds and deploys the site to GitHub Pages on every push to `main` |
+
+The repository began as a vinext starter. `db/`, `drizzle/`, `drizzle.config.ts`, `worker/`,
+`examples/d1/`, `app/chatgpt-auth.ts`, `.openai/hosting.json` and `build/` belong to that scaffold. The
+GitHub Pages build does not import any of them.
+
+## Requirements
 
 - Node.js `>=22.13.0`
+- npm (the repository has a `package-lock.json`)
+- Python 3 with `python-docx`, only if you regenerate the report tables from the DOCX report
 
-## Quick Start
+## Local development
 
 ```bash
-npm install
+npm ci
 npm run dev
-npm run build
 ```
 
-This starter does not use `wrangler.jsonc`.
+| Command | What it does |
+|---|---|
+| `npm run dev` | Starts the vinext dev server |
+| `npm run build` | vinext production build (used by `npm test`) |
+| `npm run build:pages` | Builds the static GitHub Pages site into `pages-dist/` |
+| `npm run preview:pages` | Serves the `pages-dist/` build locally |
+| `npm test` | Runs `npm run build`, then `node --test tests/rendered-html.test.mjs` |
+| `npm run lint` | ESLint over the repository |
 
-## Included Shape
+## Publishing
 
-- edit site code under `app/`
-- `.openai/hosting.json` declares optional Sites D1 and R2 bindings
-- `vite.config.ts` simulates declared bindings for local development
-- `db/schema.ts` starts intentionally empty
-- `examples/d1/` contains an optional D1 example surface
-- `drizzle.config.ts` supports local migration generation when needed
+Pushing to `main` runs `.github/workflows/pages.yml`, which runs `npm ci` and `npm run build:pages` and
+deploys `pages-dist/` to GitHub Pages. The workflow does not run `npm test` or `npm run lint`, so run
+both locally before you push. The site is served under the `/argus-security-validation-docs/` base
+path set in `vite.pages.config.ts`.
 
-## Workspace Auth Headers
+## Updating the report data
 
-Signed-in visitors receive both `oai-authenticated-user-id` and `oai-authenticated-user-email`. Private Sites require every visitor to sign in; public Sites may also have anonymous visitors, for whom neither header is present.
+`app/report-data.json` is generated, not hand-edited. `scripts/export_report_data.py` reads the Juice
+Shop validation report (`reports/juice-shop/Argus-Juice-Shop-Security-Validation.docx`) and the attack
+vector matrix (`docs/attack-vector-matrix.md`) from an Argus checkout, then writes the JSON.
 
-The user ID is stable for the same user on the same Site and different across Sites. Email and name are intended for display or contact purposes.
+The script resolves those inputs relative to its own location: this site must sit one directory below the
+Argus repository root, for example `<argus>/<site-folder>/scripts/export_report_data.py`. This repository
+does not contain those inputs, so run the script from a checkout where they exist. After regenerating,
+run `npm test` and commit the updated `app/report-data.json`.
 
-SIWC-authenticated workspace sites may also receive
-`oai-authenticated-user-full-name` when the user's SIWC profile has a non-empty
-`name` claim. The full-name value is percent-encoded UTF-8 and is accompanied by
-`oai-authenticated-user-full-name-encoding: percent-encoded-utf-8`.
+## Documentation accuracy
 
-Treat the full name as optional and fall back to email when it is absent:
-
-```tsx
-import { headers } from "next/headers";
-
-export default async function Home() {
-  const requestHeaders = await headers();
-  const userId = requestHeaders.get("oai-authenticated-user-id");
-  const email = requestHeaders.get("oai-authenticated-user-email");
-  const encodedFullName = requestHeaders.get("oai-authenticated-user-full-name");
-  const fullName =
-    encodedFullName &&
-    requestHeaders.get("oai-authenticated-user-full-name-encoding") ===
-      "percent-encoded-utf-8"
-      ? decodeURIComponent(encodedFullName)
-      : null;
-
-  const displayName = fullName ?? email;
-  // ...
-}
-```
-
-## Optional Dispatch-Owned ChatGPT Sign-In
-
-Import the ready-to-use helpers from `app/chatgpt-auth.ts` when the site needs
-optional or required ChatGPT sign-in:
-
-- Use `getChatGPTUser()` for optional signed-in UI.
-- Use `requireChatGPTUser(returnTo)` for server-rendered pages that should send
-  anonymous visitors through Sign in with ChatGPT.
-- Use `chatGPTSignInPath(returnTo)` and `chatGPTSignOutPath(returnTo)` for
-  browser links or actions.
-- Pass a same-origin relative `returnTo` path for the destination after sign-in
-  or sign-out. The helper validates and safely encodes it.
-- Mark protected pages with `export const dynamic = "force-dynamic"` because
-  they depend on per-request identity headers.
-
-Dispatch owns `/signin-with-chatgpt`, `/signout-with-chatgpt`, `/callback`, the
-OAuth cookies, and identity header injection. Do not implement app routes for
-those reserved paths. Routes that do not import and call the helper remain
-anonymous-compatible.
-
-SIWC establishes identity only; it does not prove workspace membership. Use the
-Sites hosting platform's access policy controls for workspace-wide restrictions,
-or enforce explicit server-side membership or allowlist checks.
-
-Use SIWC for account pages, user-specific dashboards, saved records, and write
-actions tied to the current ChatGPT user. Leave public content anonymous.
-
-## Useful Commands
-
-- `npm run dev`: start local development
-- `npm run build`: verify the vinext build output
-- `npm test`: build the starter and verify its rendered loading skeleton
-- `npm run db:generate`: generate Drizzle migrations after schema changes
-
-## Learn More
-
-- [vinext Documentation](https://github.com/cloudflare/vinext)
-- [Drizzle D1 Guide](https://orm.drizzle.team/docs/get-started/d1-new)
+The site describes Argus as of the report it was generated from. If the scanner's detector set, supported
+languages or CI behaviour changes, regenerate the report data and update `app/page.tsx` in the same change.
